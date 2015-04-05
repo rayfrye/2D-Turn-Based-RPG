@@ -44,6 +44,7 @@ Temporary Items
 
 # Unity
 Library/
+Temp/
 *.sln
 *.userprefs
 *.csproj
