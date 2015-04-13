@@ -15,6 +15,7 @@ public class AllData : MonoBehaviour
 	public Pathfinder pathfinder;
 	public CreateBattle createBattle;
 	public RunBattle runBattle;
+	public ReadCSV readCSV;
 	public bool startRunningBattle = false;
 
 	public Font arial;
@@ -73,6 +74,8 @@ public class AllData : MonoBehaviour
 	{
 		cal = GameObject.Find("GameData").GetComponent<Calendar>();
 		canvas = GameObject.Find ("Canvas");
+
+		readCSV = gameObject.AddComponent<ReadCSV> ();
 
 		createCharacterClass = gameObject.AddComponent<CreateCharacterClass>();
 		createCharacterClass.allData = this;
@@ -230,17 +233,19 @@ public class AllData : MonoBehaviour
 
 	public void loadCells()
 	{
+		Debug.Log ("Creating cells. Will need to update this to load from resource csv file");
+
+		string[,] grid = new string[5,10];
+		cells = new GameObject[grid.GetLength(0),grid.GetLength(1)];
+
+		print (readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Test Level.csv") [0,0]);
+
 		/*
 		 * Calendar cal
 		 * GameObject folder
 		 * string[] grid
 		 */
 		
-		Debug.Log ("Creating cells. Will need to update this to load from resource csv file");
-
-		string[,] grid = new string[5,10];
-		cells = new GameObject[grid.GetLength(0),grid.GetLength(1)];
-
 		createCells.createCells
 		(
 			cal
@@ -256,7 +261,6 @@ public class AllData : MonoBehaviour
 		);
 
 		createCells.addNeighborsToCells();
-		
 	}
 
 	public void loadBattle()
