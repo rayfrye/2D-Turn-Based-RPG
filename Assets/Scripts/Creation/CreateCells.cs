@@ -20,6 +20,7 @@ public class CreateCells : MonoBehaviour
 		,Color32 c_Disabled
 		,Font font
 		,string text
+		,ReadCellData readCellData
 	)
 	{
 		for(int row = 0; row < grid.GetLength (0); row++)
@@ -31,56 +32,89 @@ public class CreateCells : MonoBehaviour
 				newCell.name = "Cell_"+row+"_"+col;
 				newCell.tag = "Cell";
 
-				newCell.AddComponent<Cell>();
-				newCell.GetComponent<Cell>().row = row;
-				newCell.GetComponent<Cell>().col = col;
-				newCell.GetComponent<Cell>().gScore = 0;
-				newCell.GetComponent<Cell>().hScore = 0;
-				newCell.GetComponent<Cell>().openclosedstate = "untested";
-				newCell.GetComponent<Cell>().parentCell = null;
-				newCell.GetComponent<Cell>().isWalkable = true;
-			
-				newCell.AddComponent<RectTransform>();
-				newCell.GetComponent<RectTransform>().sizeDelta = new Vector2(1,1);
-				newCell.GetComponent<RectTransform>().position = new Vector3(startPoint.y + col, startPoint.x - row,0);
+				setupCell (newCell, row, col);
+				setupRectTransform (newCell, row, col, startPoint);
+				setupCanvasRenderer(newCell);
+				setupButton (newCell,c_Normal,c_Highlighted,c_Pressed,c_Disabled);
 
-				newCell.AddComponent<CanvasRenderer>();
+				for(int imageLayer = 0; imageLayer < 10; imageLayer ++)
+				{
+					if(grid[row,col].Contains ("imageLayer_" + imageLayer))
+					{
+						setupImage(newCell, readCellData.getCellValue(grid[row,col],"imageLayer_" + imageLayer), imageLayer);
+					}
+				}
 
-				newCell.AddComponent<Image>();
-				newCell.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/UI Buttons_0");
+				setupTextGameObject(newCell,text, font);
 
 				allData.cells[row,col] = newCell;
-
-				ColorBlock button_ColorBlock = new ColorBlock();
-				button_ColorBlock.normalColor = c_Normal;
-				button_ColorBlock.highlightedColor = c_Highlighted;
-				button_ColorBlock.pressedColor = c_Pressed;
-				button_ColorBlock.disabledColor = c_Disabled;
-				button_ColorBlock.colorMultiplier = 1;
-				button_ColorBlock.fadeDuration = .1f;
-
-				newCell.AddComponent<Button>();
-				newCell.GetComponent<Button>().colors = button_ColorBlock;
-
-				GameObject newText = new GameObject();
-				newText.transform.parent = newCell.transform;
-				newText.name = newCell.name+"_Text";
-				newText.tag = "Text";
-
-				newText.AddComponent<RectTransform>();
-				newText.GetComponent<RectTransform>().sizeDelta = new Vector2(50,50);
-				newText.GetComponent<RectTransform>().localScale = new Vector2(.02f,.02f);
-				newText.GetComponent<RectTransform>().localPosition = new Vector3(0,0,0);
-
-				newText.AddComponent<CanvasRenderer>();
-
-				newText.AddComponent<Text>();
-				newText.GetComponent<Text>().font = font;
-				newText.GetComponent<Text>().text = text;
 			}
 		}
 	}
 
+	public void setupCell(GameObject cell, int row, int col)
+	{
+		Cell newCell = cell.AddComponent<Cell> ();
+
+		newCell.row = row;
+		newCell.col = col;
+		newCell.gScore = 0;
+		newCell.hScore = 0;
+		newCell.openclosedstate = "untested";
+		newCell.parentCell = null;
+		newCell.isWalkable = true;
+		newCell.cellName = cell.name;
+	}
+
+	public void setupRectTransform(GameObject cell, int row, int col, Vector2 startPoint)
+	{
+		RectTransform rectTransform =  cell.AddComponent<RectTransform>();
+		rectTransform.sizeDelta = new Vector2(1,1);
+		rectTransform.position = new Vector3(startPoint.y + col, startPoint.x - row,0);
+	}
+
+	public void setupCanvasRenderer(GameObject cell)
+	{
+		CanvasRenderer canvasRanderer = cell.AddComponent<CanvasRenderer> ();
+	}
+
+	public void setupImage(GameObject cell, string imageFile, int sortingOrder)
+	{
+		GameObject imageGameObject = new GameObject ();
+		imageGameObject.transform.parent = cell.transform;
+		imageGameObject.name = cell.name+"_ImageLayer_" + sortingOrder;
+		imageGameObject.tag = "Image";
+
+		SpriteRenderer spriteRenderer = imageGameObject.AddComponent<SpriteRenderer>();
+
+		spriteRenderer.sprite = Resources.Load<Sprite>(imageFile);
+		spriteRenderer.sortingOrder = sortingOrder;
+
+		setupTextRectTransform (imageGameObject, 50, 1);
+	}
+
+	public void setupButton
+	(
+		GameObject cell
+		,Color32 c_Normal
+		,Color32 c_Highlighted
+		,Color32 c_Pressed
+		,Color32 c_Disabled
+	)
+	{
+		Button button = cell.AddComponent<Button> ();
+
+		ColorBlock button_ColorBlock = new ColorBlock();
+		button_ColorBlock.normalColor = c_Normal;
+		button_ColorBlock.highlightedColor = c_Highlighted;
+		button_ColorBlock.pressedColor = c_Pressed;
+		button_ColorBlock.disabledColor = c_Disabled;
+		button_ColorBlock.colorMultiplier = 1;
+		button_ColorBlock.fadeDuration = .1f;
+		
+		button.colors = button_ColorBlock;
+	}
+	
 	public void addNeighborsToCells()
 	{
 		GameObject[] cells = GameObject.FindGameObjectsWithTag("Cell");
@@ -106,6 +140,39 @@ public class CreateCells : MonoBehaviour
 		}
 	}
 
+	public void setupTextGameObject(GameObject cell, string textString, Font font)
+	{
+		GameObject newText = new GameObject ();
+		newText.transform.parent = cell.transform;
+		newText.name = cell.name+"_Text";
+		newText.tag = "Text";
+
+		setupTextRectTransform (newText, 50f, .02f);
+		setupTextCanvasRenderer (newText);
+		setupText (newText, textString, font);
+	}
+
+	public void setupTextRectTransform(GameObject textGameObject, float size, float scale)
+	{
+		RectTransform rectTransform = textGameObject.AddComponent<RectTransform>();
+		rectTransform.sizeDelta = new Vector2(size,size);
+		rectTransform.localScale = new Vector2(scale,scale);
+		rectTransform.localPosition = new Vector3(0,0,0);
+	}
+
+	public void setupTextCanvasRenderer(GameObject textGameObject)
+	{
+		CanvasRenderer canvasRenderer = textGameObject.AddComponent<CanvasRenderer>();
+	}
+
+	public void setupText(GameObject textGameObject, string textString, Font font)
+	{
+		Text text = textGameObject.AddComponent<Text>();
+
+		text.font = font;
+		text.text = textString;
+	}
+	
 	public void clearGrid()
 	{
 		GameObject[] cellGameobjects = GameObject.FindGameObjectsWithTag("Cell");
@@ -120,4 +187,6 @@ public class CreateCells : MonoBehaviour
 			cell.parentCell = null;
 		}
 	}
+
+	
 }

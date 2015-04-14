@@ -33,6 +33,7 @@ public class CreateCharacterGameObject : MonoBehaviour
 		Debug.Log ("At some point want to store sprite with character class/character");
 		Debug.Log ("Need to create sprite for archers");
 		newCharacterGameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Infantry");
+		newCharacterGameObject.GetComponent<SpriteRenderer> ().sortingOrder = 5;
 		
 		/*******************************************************************************
 		 * MoveCharacter

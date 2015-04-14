@@ -16,6 +16,7 @@ public class AllData : MonoBehaviour
 	public CreateBattle createBattle;
 	public RunBattle runBattle;
 	public ReadCSV readCSV;
+	public ReadCellData readCellData;
 	public bool startRunningBattle = false;
 
 	public Font arial;
@@ -76,6 +77,7 @@ public class AllData : MonoBehaviour
 		canvas = GameObject.Find ("Canvas");
 
 		readCSV = gameObject.AddComponent<ReadCSV> ();
+		readCellData = gameObject.AddComponent<ReadCellData> ();
 
 		createCharacterClass = gameObject.AddComponent<CreateCharacterClass>();
 		createCharacterClass.allData = this;
@@ -109,8 +111,8 @@ public class AllData : MonoBehaviour
 		loadClasses();
 		loadCharacters();
 		loadCells();
-		loadCharacterGameObjects();
-		loadBattle();
+//		loadCharacterGameObjects();
+//		loadBattle();
 	}
 
 	public void loadClasses()
@@ -235,10 +237,8 @@ public class AllData : MonoBehaviour
 	{
 		Debug.Log ("Creating cells. Will need to update this to load from resource csv file");
 
-		string[,] grid = new string[5,10];
+		string[,] grid = readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Test Level.csv");
 		cells = new GameObject[grid.GetLength(0),grid.GetLength(1)];
-
-		print (readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Test Level.csv") [0,0]);
 
 		/*
 		 * Calendar cal
@@ -250,7 +250,7 @@ public class AllData : MonoBehaviour
 		(
 			cal
 			,cellFolder
-			,new string[5,10]
+			,grid
 			,new Vector2(0,0)
 			,c_White_25pct
 			,c_White_50pct
@@ -258,6 +258,7 @@ public class AllData : MonoBehaviour
 			,c_White_50pct
 			,arial
 			,"test"
+			,readCellData
 		);
 
 		createCells.addNeighborsToCells();
