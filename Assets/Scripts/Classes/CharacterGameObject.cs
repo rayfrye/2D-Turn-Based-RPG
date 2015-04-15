@@ -12,6 +12,8 @@ public class CharacterGameObject : MonoBehaviour
 	public int distanceToTarget;
 	public List<GameObject> path;
 
+	public bool isPlayer;
+
 	public int row;
 	public int col;
 

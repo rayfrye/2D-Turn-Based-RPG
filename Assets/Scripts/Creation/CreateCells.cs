@@ -21,6 +21,7 @@ public class CreateCells : MonoBehaviour
 		,Font font
 		,string text
 		,ReadCellData readCellData
+		,CreateCharacterGameObject createCharacterGameObject
 	)
 	{
 		for(int row = 0; row < grid.GetLength (0); row++)
@@ -36,18 +37,67 @@ public class CreateCells : MonoBehaviour
 				setupRectTransform (newCell, row, col, startPoint);
 				setupCanvasRenderer(newCell);
 				setupButton (newCell,c_Normal,c_Highlighted,c_Pressed,c_Disabled);
+				applyImageLayers(newCell, grid[row,col],10, readCellData);
+				setupCharacter
+				(
+					grid[row,col]
+					, readCellData
+					, createCharacterGameObject
+					, cal
+					, allData
+					, newCell.transform.position
+				);
 
-				for(int imageLayer = 0; imageLayer < 10; imageLayer ++)
-				{
-					if(grid[row,col].Contains ("imageLayer_" + imageLayer))
-					{
-						setupImage(newCell, readCellData.getCellValue(grid[row,col],"imageLayer_" + imageLayer), imageLayer);
-					}
-				}
 
 				setupTextGameObject(newCell,text, font);
 
 				allData.cells[row,col] = newCell;
+			}
+		}
+	}
+
+	public void setupCharacter
+	(
+		string cellValue
+		, ReadCellData readCellData
+		, CreateCharacterGameObject createCharacterGameObject
+		, Calendar cal
+		, AllData allData
+		, Vector3 pos
+	)
+	{
+		if (cellValue.Contains ("characterID")) 
+		{
+			string factionTag = readCellData.getCellValue(cellValue,"characterFactionTag");
+			string enemyFactionTag = readCellData.getCellValue(cellValue,"characterEnemyFactionTag");
+			int characterID = int.Parse (enemyFactionTag = readCellData.getCellValue(cellValue,"characterID"));
+			bool isPlayer = false;
+
+			if(readCellData.getCellValue(cellValue,"characterIsPlayer") == "True")
+			{
+				isPlayer = true;
+			}
+
+			createCharacterGameObject.createCharacterGameObject
+			(
+				cal
+				,allData.characterGameObjectFolder
+				,pos
+				,allData.characters[characterID]
+				,factionTag
+				,enemyFactionTag
+				,isPlayer
+			);
+		}
+	}
+
+	public void applyImageLayers(GameObject newCell, string cellValue,int numOfLayers, ReadCellData readCellData)
+	{
+		for(int imageLayer = 0; imageLayer < numOfLayers; imageLayer ++)
+		{
+			if(cellValue.Contains ("imageLayer_" + imageLayer))
+			{
+				setupImage(newCell, readCellData.getCellValue(cellValue,"imageLayer_" + imageLayer), imageLayer);
 			}
 		}
 	}

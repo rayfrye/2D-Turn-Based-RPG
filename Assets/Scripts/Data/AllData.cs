@@ -22,11 +22,11 @@ public class AllData : MonoBehaviour
 	public Font arial;
 
 	#region DataFolders
-	GameObject characterClassFolder;
-	GameObject characterFolder;
-	GameObject characterGameObjectFolder;
-	GameObject cellFolder;
-	GameObject canvas;
+	public GameObject characterClassFolder;
+	public GameObject characterFolder;
+	public GameObject characterGameObjectFolder;
+	public GameObject cellFolder;
+	public GameObject canvas;
 	#endregion DataFolders
 
 	#region colors
@@ -43,10 +43,20 @@ public class AllData : MonoBehaviour
 	public List<Character> characters = new List<Character>();
 	public List<GameObject> characterGameObjects = new List<GameObject>();
 	public GameObject[,] cells = new GameObject[0,0];
+	
+	public enum gameState
+	{
+		Battle
+		,Overworld
+	}
+
+	public gameState currentState;
 
 	// Use this for initialization
 	void Start ()
 	{
+		currentState = gameState.Overworld;
+
 		getComponents();
 		createFolders();
 		loadData ();
@@ -108,11 +118,30 @@ public class AllData : MonoBehaviour
 
 	public void loadData()
 	{
-		loadClasses();
-		loadCharacters();
-		loadCells();
-//		loadCharacterGameObjects();
-//		loadBattle();
+		switch(currentState)
+		{
+		case gameState.Battle:
+		{
+			loadClasses();
+			loadCharacters();
+			loadCells("Test Level");
+			loadCharacterGameObjects_Manual();
+			loadBattle();
+			break;
+		}
+		case gameState.Overworld:
+		{
+			loadClasses();
+			loadCharacters();
+			loadCells("Test Level");
+
+			break;
+		}
+		default:
+		{
+			break;
+		}
+		}
 	}
 
 	public void loadClasses()
@@ -189,7 +218,7 @@ public class AllData : MonoBehaviour
 		);
 	}
 
-	public void loadCharacterGameObjects()
+	public void loadCharacterGameObjects_Manual()
 	{
 		/*
 		 * Calendar cal
@@ -210,6 +239,7 @@ public class AllData : MonoBehaviour
 			,characters[0]
 			,"Faction - Side 1"
 			,"Faction - Side 2"
+			,false
 		);
 
 		createCharacterGameObject.createCharacterGameObject
@@ -220,6 +250,7 @@ public class AllData : MonoBehaviour
 			,characters[1]
 			,"Faction - Side 2"
 			,"Faction - Side 1"
+			,false
 		);
 
 		createCharacterGameObject.createCharacterGameObject
@@ -230,14 +261,15 @@ public class AllData : MonoBehaviour
 			,characters[2]
 			,"Faction - Side 2"
 			,"Faction - Side 1"
+			,false
 		);
 	}
 
-	public void loadCells()
+	public void loadCells(string currentLocation)
 	{
 		Debug.Log ("Creating cells. Will need to update this to load from resource csv file");
 
-		string[,] grid = readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Test Level.csv");
+		string[,] grid = readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/" + currentLocation + ".csv");
 		cells = new GameObject[grid.GetLength(0),grid.GetLength(1)];
 
 		/*
@@ -259,6 +291,7 @@ public class AllData : MonoBehaviour
 			,arial
 			,"test"
 			,readCellData
+			,createCharacterGameObject
 		);
 
 		createCells.addNeighborsToCells();
