@@ -304,7 +304,7 @@ public class AllData : MonoBehaviour
 			,c_White_75pct
 			,c_White_50pct
 			,arial
-			,"test"
+			,""
 			,readCellData
 			,createCharacterGameObject
 		);

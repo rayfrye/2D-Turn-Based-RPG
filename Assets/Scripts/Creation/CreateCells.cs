@@ -70,12 +70,11 @@ public class CreateCells : MonoBehaviour
 		, int col
 	)
 	{
-		if (cellValue.Contains ("characterID")) 
+		if (cellValue.Contains ("characterID"))
 		{
 			string factionTag = readCellData.getCellValue(cellValue,"characterFactionTag");
 			string enemyFactionTag = readCellData.getCellValue(cellValue,"characterEnemyFactionTag");
 			int characterID = int.Parse (enemyFactionTag = readCellData.getCellValue(cellValue,"characterID"));
-			bool isPlayer = false;
 
 			if(readCellData.getCellValue(cellValue,"characterIsPlayer") == "True")
 			{
@@ -85,12 +84,14 @@ public class CreateCells : MonoBehaviour
 					,allData.characterGameObjectFolder
 					,pos
 					,allData.characters[characterID]
-					,factionTag
+					,"Player"
 					,enemyFactionTag
 					,true
 					,row
 					,col
 				);
+
+				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<SmoothCamera2D>().target = allData.player.transform;
 			}
 			else
 			{
@@ -107,7 +108,6 @@ public class CreateCells : MonoBehaviour
 					,col
 				);
 			}
-
 		}
 	}
 
@@ -117,7 +117,14 @@ public class CreateCells : MonoBehaviour
 		{
 			if(cellValue.Contains ("imageLayer_" + imageLayer))
 			{
-				setupImage(newCell, readCellData.getCellValue(cellValue,"imageLayer_" + imageLayer), imageLayer);
+				int imageLayerIndex = 0;
+
+				if(cellValue.Contains ("imageLayer_" + imageLayer + "_index"))
+				{
+					imageLayerIndex = int.Parse (readCellData.getCellValue (cellValue, "imageLayer_" + imageLayer + "_index"));
+				}
+
+				setupImage(newCell, readCellData.getCellValue(cellValue,"imageLayer_" + imageLayer), imageLayer, imageLayerIndex);
 			}
 		}
 	}
@@ -148,7 +155,7 @@ public class CreateCells : MonoBehaviour
 		CanvasRenderer canvasRanderer = cell.AddComponent<CanvasRenderer> ();
 	}
 
-	public void setupImage(GameObject cell, string imageFile, int sortingOrder)
+	public void setupImage(GameObject cell, string imageFile, int sortingOrder, int imageLayerIndex)
 	{
 		GameObject imageGameObject = new GameObject ();
 		imageGameObject.transform.parent = cell.transform;
@@ -156,8 +163,7 @@ public class CreateCells : MonoBehaviour
 		imageGameObject.tag = "Image";
 
 		SpriteRenderer spriteRenderer = imageGameObject.AddComponent<SpriteRenderer>();
-
-		spriteRenderer.sprite = Resources.Load<Sprite>(imageFile);
+		spriteRenderer.sprite = Resources.LoadAll<Sprite> (imageFile)[imageLayerIndex];
 		spriteRenderer.sortingOrder = sortingOrder;
 
 		setupTextRectTransform (imageGameObject, 50, 1);
