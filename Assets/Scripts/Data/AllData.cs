@@ -15,9 +15,11 @@ public class AllData : MonoBehaviour
 	public Pathfinder pathfinder;
 	public CreateBattle createBattle;
 	public RunBattle runBattle;
+	public RunOverworld runOverworld;
 	public ReadCSV readCSV;
 	public ReadCellData readCellData;
-	public bool startRunningBattle = false;
+	public bool finishedLoading = false;
+	public GameObject player;
 
 	public Font arial;
 
@@ -103,17 +105,6 @@ public class AllData : MonoBehaviour
 
 		pathfinder = gameObject.AddComponent<Pathfinder>();
 		pathfinder.GetComponent<Pathfinder> ().allData = this;
-
-		createBattle = gameObject.AddComponent<CreateBattle>();
-		createBattle.allData = this;
-		createBattle.numOfDiceSides = 10000;
-		createBattle.pathfinder = pathfinder;
-
-		runBattle = gameObject.AddComponent<RunBattle>();
-		runBattle.allData = this;
-		runBattle.cal = cal;
-		runBattle.pathfinder = pathfinder;
-		runBattle.currentBattleState = RunBattle.battleStateType.GetTarget;
 	}
 
 	public void loadData()
@@ -126,7 +117,18 @@ public class AllData : MonoBehaviour
 			loadCharacters();
 			loadCells("Test Level");
 			loadCharacterGameObjects_Manual();
-			loadBattle();
+
+			createBattle = gameObject.AddComponent<CreateBattle>();
+			createBattle.allData = this;
+			createBattle.numOfDiceSides = 10000;
+			createBattle.pathfinder = pathfinder;
+
+			runBattle = gameObject.AddComponent<RunBattle>();
+			runBattle.allData = this;
+			runBattle.cal = cal;
+			runBattle.pathfinder = pathfinder;
+			runBattle.currentBattleState = RunBattle.battleStateType.GetTarget;
+
 			break;
 		}
 		case gameState.Overworld:
@@ -134,6 +136,13 @@ public class AllData : MonoBehaviour
 			loadClasses();
 			loadCharacters();
 			loadCells("Test Level");
+
+			runOverworld = gameObject.AddComponent<RunOverworld> ();
+			runOverworld.allData = this;
+			runOverworld.cal = cal;
+			runOverworld.currentState = RunOverworld.OverworldState.Idle;
+			runOverworld.player = player;
+			runOverworld.playerCharacterGameObject = player.GetComponent<CharacterGameObject>();
 
 			break;
 		}
@@ -240,6 +249,8 @@ public class AllData : MonoBehaviour
 			,"Faction - Side 1"
 			,"Faction - Side 2"
 			,false
+			,0
+			,0
 		);
 
 		createCharacterGameObject.createCharacterGameObject
@@ -251,6 +262,8 @@ public class AllData : MonoBehaviour
 			,"Faction - Side 2"
 			,"Faction - Side 1"
 			,false
+			,3
+			,6
 		);
 
 		createCharacterGameObject.createCharacterGameObject
@@ -262,6 +275,8 @@ public class AllData : MonoBehaviour
 			,"Faction - Side 2"
 			,"Faction - Side 1"
 			,false
+			,3
+			,3
 		);
 	}
 

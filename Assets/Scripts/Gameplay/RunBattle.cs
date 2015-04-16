@@ -24,7 +24,7 @@ public class RunBattle : MonoBehaviour
 
 	void Update()
 	{
-		if (allData.startRunningBattle) 
+		if (allData.finishedLoading) 
 		{
 			runBattle (allData.characterGameObjects,allData.cells);
 		}

@@ -46,6 +46,8 @@ public class CreateCells : MonoBehaviour
 					, cal
 					, allData
 					, newCell.transform.position
+					, row
+					, col
 				);
 
 
@@ -64,6 +66,8 @@ public class CreateCells : MonoBehaviour
 		, Calendar cal
 		, AllData allData
 		, Vector3 pos
+		, int row
+		, int col
 	)
 	{
 		if (cellValue.Contains ("characterID")) 
@@ -75,19 +79,35 @@ public class CreateCells : MonoBehaviour
 
 			if(readCellData.getCellValue(cellValue,"characterIsPlayer") == "True")
 			{
-				isPlayer = true;
+				allData.player = createCharacterGameObject.createCharacterGameObject
+				(
+					cal
+					,allData.characterGameObjectFolder
+					,pos
+					,allData.characters[characterID]
+					,factionTag
+					,enemyFactionTag
+					,true
+					,row
+					,col
+				);
+			}
+			else
+			{
+				createCharacterGameObject.createCharacterGameObject
+				(
+					cal
+					,allData.characterGameObjectFolder
+					,pos
+					,allData.characters[characterID]
+					,factionTag
+					,enemyFactionTag
+					,false
+					,row
+					,col
+				);
 			}
 
-			createCharacterGameObject.createCharacterGameObject
-			(
-				cal
-				,allData.characterGameObjectFolder
-				,pos
-				,allData.characters[characterID]
-				,factionTag
-				,enemyFactionTag
-				,isPlayer
-			);
 		}
 	}
 

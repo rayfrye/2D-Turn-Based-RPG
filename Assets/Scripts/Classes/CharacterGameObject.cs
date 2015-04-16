@@ -20,4 +20,14 @@ public class CharacterGameObject : MonoBehaviour
 	public AllData allData;
 	
 	public int currentHealth;
+
+	public dir currentDir;
+
+	public enum dir
+	{
+		North
+		,South
+		,East
+		,West
+	}
 }

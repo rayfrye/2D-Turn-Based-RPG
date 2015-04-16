@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class CreateCharacterGameObject : MonoBehaviour 
 {
 	public AllData allData;
 
-	public void createCharacterGameObject
+	public GameObject createCharacterGameObject
 	(
 		Calendar cal
 		,GameObject folder
@@ -14,6 +17,8 @@ public class CreateCharacterGameObject : MonoBehaviour
 		,string factionTag
 		,string enemyFactionTag
 		,bool isPlayer
+		,int row
+		,int col
 	)
 	{
 		GameObject newCharacterGameObject = new GameObject();
@@ -24,11 +29,13 @@ public class CreateCharacterGameObject : MonoBehaviour
 		setupTransform (newCharacterGameObject.transform, pos, new Vector3 (1, 1, 1));
 		setupSpriteRenderer (newCharacterGameObject, "Sprites/Infantry");
 		setupMoveCharacter (newCharacterGameObject, cal, character);
-		setupCharacter (newCharacterGameObject, character, allData, enemyFactionTag, pos, isPlayer);
+		setupCharacter (newCharacterGameObject, character, allData, enemyFactionTag, pos, isPlayer, row, col);
 
 		GameObject.Find ("Cell_" + newCharacterGameObject.GetComponent<CharacterGameObject> ().row + "_" + newCharacterGameObject.GetComponent<CharacterGameObject> ().col).GetComponent<Cell> ().isWalkable = false;
 
 		allData.characterGameObjects.Add (newCharacterGameObject);
+
+		return newCharacterGameObject;
 	}
 
 	public void setupTransform(Transform characterTransform, Vector3 pos, Vector3 scale)
@@ -56,7 +63,7 @@ public class CreateCharacterGameObject : MonoBehaviour
 		moveCharacter.cal = cal;
 	}
 
-	public void setupCharacter(GameObject characterGameObject, Character character, AllData allData, string enemyFactionTag, Vector3 pos, bool isPlayer)
+	public void setupCharacter(GameObject characterGameObject, Character character, AllData allData, string enemyFactionTag, Vector3 pos, bool isPlayer, int row, int col)
 	{
 		CharacterGameObject characterGameObjectScript = characterGameObject.AddComponent<CharacterGameObject> ();
 
@@ -64,9 +71,11 @@ public class CreateCharacterGameObject : MonoBehaviour
 		characterGameObjectScript.allData = allData;
 		characterGameObjectScript.enemyFactionTag = enemyFactionTag;
 		characterGameObjectScript.currentHealth = character.characterClass.totalHealth;
-		characterGameObjectScript.row = Mathf.Abs ((int) pos.y);
-		characterGameObjectScript.col = Mathf.Abs ((int) pos.x);
+		characterGameObjectScript.row = row;
+		characterGameObjectScript.col = col;
 		characterGameObjectScript.isPlayer = isPlayer;
+		characterGameObjectScript.path = new List<GameObject> ();
+		characterGameObjectScript.currentDir = CharacterGameObject.dir.South;
 	}
 
 }

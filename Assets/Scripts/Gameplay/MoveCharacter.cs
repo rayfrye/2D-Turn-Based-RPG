@@ -17,6 +17,7 @@ public class MoveCharacter : MonoBehaviour
 		cal = GameObject.Find("GameData").GetComponent<Calendar>();
 	}
 	
+
 	public void moveTowardsTarget(Vector3 targetLocation)
 	{
 		transform.position = Vector3.MoveTowards(transform.position,targetLocation,character.characterClass.moveSpeed * Time.deltaTime * cal.timeSpeed);
