@@ -32,8 +32,14 @@ public class CreateCells : MonoBehaviour
 				newCell.transform.parent = folder.transform;
 				newCell.name = "Cell_"+row+"_"+col;
 				newCell.tag = "Cell";
+				bool isWalkable = true;
 
-				setupCell (newCell, row, col);
+				if(readCellData.getCellValue(grid[row,col],"isWalkable") == "false")
+				{
+					isWalkable = false;
+				}
+
+				setupCell (newCell, row, col, isWalkable);
 				setupRectTransform (newCell, row, col, startPoint);
 				setupCanvasRenderer(newCell);
 				setupButton (newCell,c_Normal,c_Highlighted,c_Pressed,c_Disabled);
@@ -129,7 +135,7 @@ public class CreateCells : MonoBehaviour
 		}
 	}
 
-	public void setupCell(GameObject cell, int row, int col)
+	public void setupCell(GameObject cell, int row, int col, bool isWalkable)
 	{
 		Cell newCell = cell.AddComponent<Cell> ();
 
@@ -139,7 +145,7 @@ public class CreateCells : MonoBehaviour
 		newCell.hScore = 0;
 		newCell.openclosedstate = "untested";
 		newCell.parentCell = null;
-		newCell.isWalkable = true;
+		newCell.isWalkable = isWalkable;
 		newCell.cellName = cell.name;
 	}
 

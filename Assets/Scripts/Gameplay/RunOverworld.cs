@@ -99,8 +99,11 @@ public class RunOverworld : MonoBehaviour
 
 			if (dest != null) 
 			{
-				playerCharacterGameObject.path.Add (dest);
-				currentState = OverworldState.Moving;
+				if(dest.GetComponent<Cell>().isWalkable)
+				{
+					playerCharacterGameObject.path.Add (dest);
+					currentState = OverworldState.Moving;
+				}
             }
 		}
 	}

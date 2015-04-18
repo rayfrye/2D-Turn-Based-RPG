@@ -282,8 +282,6 @@ public class AllData : MonoBehaviour
 
 	public void loadCells(string currentLocation)
 	{
-		Debug.Log ("Creating cells. Will need to update this to load from resource csv file");
-
 		string[,] grid = readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/" + currentLocation + ".csv");
 		cells = new GameObject[grid.GetLength(0),grid.GetLength(1)];
 
