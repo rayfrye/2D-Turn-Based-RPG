@@ -10,9 +10,12 @@ public class Cell : MonoBehaviour
 	public int row;
 	public int col;
 
-	bool isDoor;
-	string doorLevel;
-	int doorNum;
+	public bool isDoor;
+	public string doorLevel;
+	public int doorNum;
+
+	public bool isSpawnPoint;
+	public int spawnPointNum;
 
 	#region pathfinding
 	public int gScore;

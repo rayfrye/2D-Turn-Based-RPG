@@ -44,6 +44,7 @@ public class CreateCells : MonoBehaviour
 				setupCanvasRenderer(newCell);
 				setupButton (newCell,c_Normal,c_Highlighted,c_Pressed,c_Disabled);
 				applyImageLayers(newCell, grid[row,col],10, readCellData);
+				setupDoors(grid[row,col], readCellData, newCell);
 				setupCharacter
 				(
 					grid[row,col]
@@ -57,10 +58,52 @@ public class CreateCells : MonoBehaviour
 				);
 
 
+
 				setupTextGameObject(newCell,text, font);
 
 				allData.cells[row,col] = newCell;
 			}
+		}
+	}
+
+	public void setupDoors
+	(
+		string cellValue
+		, ReadCellData readCellData
+		, GameObject newCell
+	)
+	{
+		Cell cell = newCell.GetComponent<Cell> ();
+
+		if (cellValue.Contains ("isDoor")) 
+		{
+			if(readCellData.getCellValue(cellValue,"isDoor") == "true")
+			{
+				cell.isDoor = true;
+			}
+		}
+
+		if (cellValue.Contains ("doorNum")) 
+		{
+			cell.doorNum = int.Parse (readCellData.getCellValue(cellValue,"doorNum"));
+		}
+
+		if (cellValue.Contains ("isSpawnPoint")) 
+		{
+			if(readCellData.getCellValue(cellValue,"isSpawnPoint") == "true")
+			{
+				cell.isSpawnPoint = true;
+			}
+		}
+
+		if (cellValue.Contains ("spawnPointNum")) 
+		{
+			cell.spawnPointNum = int.Parse (readCellData.getCellValue(cellValue,"spawnPointNum"));
+		}
+
+		if (cellValue.Contains ("doorLevel")) 
+		{
+			cell.doorLevel = readCellData.getCellValue(cellValue,"doorLevel");
 		}
 	}
 
@@ -76,44 +119,49 @@ public class CreateCells : MonoBehaviour
 		, int col
 	)
 	{
-		if (cellValue.Contains ("characterID"))
-		{
-			string factionTag = readCellData.getCellValue(cellValue,"characterFactionTag");
-			string enemyFactionTag = readCellData.getCellValue(cellValue,"characterEnemyFactionTag");
-			int characterID = int.Parse (enemyFactionTag = readCellData.getCellValue(cellValue,"characterID"));
 
-			if(readCellData.getCellValue(cellValue,"characterIsPlayer") == "True")
+
+		if (cellValue.Contains ("isSpawnPoint")) 
+		{
+			if (readCellData.getCellValue (cellValue, "isSpawnPoint") == "true" 
+				&& int.Parse (readCellData.getCellValue (cellValue, "spawnPointNum")) == allData.currentDoorNum
+			   ) 
 			{
 				allData.player = createCharacterGameObject.createCharacterGameObject
-				(
-					cal
-					,allData.characterGameObjectFolder
-					,pos
-					,allData.characters[characterID]
-					,"Player"
-					,enemyFactionTag
-					,true
-					,row
-					,col
+					(
+						cal
+						, allData.characterGameObjectFolder
+						, pos
+						, allData.characters [allData.playerCharacterID]
+						, "Player"
+						, "Good"
+						, "Bad"
+						, true
+						, row
+						, col
 				);
+				
+				GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<SmoothCamera2D> ().target = allData.player.transform;
+			}
+		}
 
-				GameObject.FindGameObjectWithTag("MainCamera").GetComponent<SmoothCamera2D>().target = allData.player.transform;
-			}
-			else
-			{
-				createCharacterGameObject.createCharacterGameObject
-				(
-					cal
-					,allData.characterGameObjectFolder
-					,pos
-					,allData.characters[characterID]
-					,factionTag
-					,enemyFactionTag
-					,false
-					,row
-					,col
-				);
-			}
+		if (cellValue.Contains ("characterID"))
+		{
+			int characterID = int.Parse (readCellData.getCellValue(cellValue,"characterID"));
+
+			createCharacterGameObject.createCharacterGameObject
+			(
+				cal
+				,allData.characterGameObjectFolder
+				,pos
+				,allData.characters[characterID]
+				,"NPC"
+				,"Bad"
+				,"Good"
+				,false
+				,row
+				,col
+			);
 		}
 	}
 

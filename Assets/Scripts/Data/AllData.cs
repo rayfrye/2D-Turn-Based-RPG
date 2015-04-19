@@ -9,6 +9,9 @@ public class AllData : MonoBehaviour
 	Calendar cal;
 
 	public string currentLevel;
+	public int currentDoorNum = 0;
+
+	public int playerCharacterID;
 
 	public CreateCharacterClass createCharacterClass;
 	public CreateCharacter createCharacter;
@@ -59,13 +62,16 @@ public class AllData : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		DontDestroyOnLoad(this);
-
 		currentState = gameState.Overworld;
 
 		getComponents();
 		createFolders();
 		loadData ();
+
+		DontDestroyOnLoad(this);
+		DontDestroyOnLoad (GameObject.Find ("Main Camera"));
+		DontDestroyOnLoad(GameObject.Find ("Canvas"));
+		DontDestroyOnLoad(GameObject.Find ("EventSystem"));
 	}
 
 	public void createFolders()
@@ -251,6 +257,7 @@ public class AllData : MonoBehaviour
 			,characterGameObjectFolder
 			,cells[0,0].transform.position
 			,characters[0]
+			,"NPC"
 			,"Faction - Side 1"
 			,"Faction - Side 2"
 			,false
@@ -264,6 +271,7 @@ public class AllData : MonoBehaviour
 			,characterGameObjectFolder
 			,cells[3,6].transform.position
 			,characters[1]
+			,"NPC"
 			,"Faction - Side 2"
 			,"Faction - Side 1"
 			,false
@@ -277,6 +285,7 @@ public class AllData : MonoBehaviour
 			,characterGameObjectFolder
 			,cells[3,3].transform.position
 			,characters[2]
+			,"NPC"
 			,"Faction - Side 2"
 			,"Faction - Side 1"
 			,false

@@ -6,7 +6,6 @@ using System.Linq;
 
 public class RunOverworld : MonoBehaviour 
 {
-
 	public AllData allData;
 	public Calendar cal;
 	public GameObject player;
@@ -21,6 +20,7 @@ public class RunOverworld : MonoBehaviour
 		,Dialogue
 		,Shopping
 		,Inventory
+		,GoingThroughDoor
 	}
 
 	void Update()
@@ -46,6 +46,11 @@ public class RunOverworld : MonoBehaviour
 			{
 				currentState = OverworldState.Idle;
 			}
+			break;
+		}
+		case OverworldState.GoingThroughDoor:
+		{
+			Application.LoadLevel("Battle");
 			break;
 		}
 		default:
@@ -113,23 +118,55 @@ public class RunOverworld : MonoBehaviour
 		Transform currentCharacterTransform = allData.player.transform;
 		float maxDistanceDelta = Time.deltaTime * cal.timeSpeed * 1.25f;
 
-		if ((currentCharacterTransform.position - currentCharacter.path [0].transform.position).sqrMagnitude > .001f) 
+		Cell destCell = currentCharacter.path [0].GetComponent<Cell> ();
+
+		if (!destCell.isDoor) 
 		{
-			currentCharacterTransform.position = Vector3.MoveTowards (currentCharacterTransform.position, currentCharacter.path [0].transform.position, maxDistanceDelta);
-			return false;
-		}
+			if ((currentCharacterTransform.position - currentCharacter.path [0].transform.position).sqrMagnitude > .001f) 
+			{
+				currentCharacterTransform.position = Vector3.MoveTowards (currentCharacterTransform.position, currentCharacter.path [0].transform.position, maxDistanceDelta);
+				return false;
+			} 
+			else 
+			{
+				currentCharacterTransform.position = currentCharacter.path [0].transform.position;
+
+				GameObject.Find ("Cell_" + currentCharacter.row + "_" + currentCharacter.col).GetComponent<Cell> ().isWalkable = true;
+				GameObject.Find ("Cell_" + currentCharacter.path [0].GetComponent<Cell> ().row + "_" + currentCharacter.path [0].GetComponent<Cell> ().col).GetComponent<Cell> ().isWalkable = false;
+				
+				currentCharacter.row = currentCharacter.path [0].GetComponent<Cell> ().row;
+				currentCharacter.col = currentCharacter.path [0].GetComponent<Cell> ().col;
+
+				currentCharacter.path.Clear ();
+				return true;
+			}
+		} 
 		else 
 		{
-			currentCharacterTransform.position = currentCharacter.path[0].transform.position;
+			if ((currentCharacterTransform.position - currentCharacter.path [0].transform.position).sqrMagnitude > .05f)
+			{
+				currentCharacterTransform.position = Vector3.MoveTowards (currentCharacterTransform.position, currentCharacter.path [0].transform.position, maxDistanceDelta);
+				return false;
+			} 
+			else 
+			{
+				//currentCharacterTransform.position = currentCharacter.path [0].transform.position;
+				
+				GameObject.Find ("Cell_" + currentCharacter.row + "_" + currentCharacter.col).GetComponent<Cell> ().isWalkable = true;
+				destCell.isWalkable = false;
+				
+				currentCharacter.row = currentCharacter.path [0].GetComponent<Cell> ().row;
+				currentCharacter.col = currentCharacter.path [0].GetComponent<Cell> ().col;
+				
+				currentCharacter.path.Clear ();
 
-			GameObject.Find ("Cell_" + currentCharacter.row + "_" + currentCharacter.col).GetComponent<Cell>().isWalkable = true;
-			GameObject.Find ("Cell_" + currentCharacter.path[0].GetComponent<Cell>().row + "_" + currentCharacter.path[0].GetComponent<Cell>().col).GetComponent<Cell>().isWalkable = false;
-			
-			currentCharacter.row = currentCharacter.path[0].GetComponent<Cell>().row;
-			currentCharacter.col = currentCharacter.path[0].GetComponent<Cell>().col;
+				allData.currentLevel = destCell.doorLevel;
+				allData.currentDoorNum = destCell.doorNum;
 
-			currentCharacter.path.Clear ();
-			return true;
+				currentState = OverworldState.GoingThroughDoor;
+
+				return false;
+			}
 		}
 	}
 }
