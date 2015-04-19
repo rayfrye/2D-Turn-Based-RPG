@@ -111,7 +111,7 @@ public class RunOverworld : MonoBehaviour
 	bool playerMoveAlongPath(CharacterGameObject currentCharacter)
 	{
 		Transform currentCharacterTransform = allData.player.transform;
-		float maxDistanceDelta = Time.deltaTime * cal.timeSpeed;
+		float maxDistanceDelta = Time.deltaTime * cal.timeSpeed * 1.25f;
 
 		if ((currentCharacterTransform.position - currentCharacter.path [0].transform.position).sqrMagnitude > .001f) 
 		{

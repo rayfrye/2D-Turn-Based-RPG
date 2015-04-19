@@ -8,6 +8,8 @@ public class AllData : MonoBehaviour
 {
 	Calendar cal;
 
+	public string currentLevel;
+
 	public CreateCharacterClass createCharacterClass;
 	public CreateCharacter createCharacter;
 	public CreateCharacterGameObject createCharacterGameObject;
@@ -57,6 +59,8 @@ public class AllData : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		DontDestroyOnLoad(this);
+
 		currentState = gameState.Overworld;
 
 		getComponents();
@@ -115,7 +119,7 @@ public class AllData : MonoBehaviour
 		{
 			loadClasses();
 			loadCharacters();
-			loadCells("Test Level");
+			loadCells(currentLevel);
 			loadCharacterGameObjects_Manual();
 
 			createBattle = gameObject.AddComponent<CreateBattle>();
@@ -135,7 +139,7 @@ public class AllData : MonoBehaviour
 		{
 			loadClasses();
 			loadCharacters();
-			loadCells("Test Level");
+			loadCells(currentLevel);
 
 			runOverworld = gameObject.AddComponent<RunOverworld> ();
 			runOverworld.allData = this;
@@ -144,6 +148,7 @@ public class AllData : MonoBehaviour
 			runOverworld.player = player;
 			runOverworld.playerCharacterGameObject = player.GetComponent<CharacterGameObject>();
 
+			finishedLoading = true;
 			break;
 		}
 		default:
