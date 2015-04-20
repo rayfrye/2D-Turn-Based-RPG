@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 85742a113a3ac3d499a74f3af121be06
-timeCreated: 1429488555
+timeCreated: 1429493295
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -8,6 +8,10 @@ TextureImporter:
     21300002: human_hat_1
     21300004: human_hat_2
     21300006: human_hat_3
+    21300008: human_hat_4
+    21300010: human_hat_5
+    21300012: human_hat_6
+    21300014: human_hat_7
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -87,6 +91,46 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 60
+        y: 180
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: human_hat_4
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 180
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: human_hat_5
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 180
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: human_hat_6
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 180
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: human_hat_7
+      rect:
+        serializedVersion: 2
+        x: 140
         y: 180
         width: 20
         height: 20

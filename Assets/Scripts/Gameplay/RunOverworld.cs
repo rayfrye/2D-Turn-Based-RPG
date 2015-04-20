@@ -88,13 +88,13 @@ public class RunOverworld : MonoBehaviour
 			case "a":
 			{
 				dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row) + "_" + (playerCharacterGameObject.col-1));
-				playerCharacterGameObject.currentDir = CharacterGameObject.dir.East;
+				playerCharacterGameObject.currentDir = CharacterGameObject.dir.West;
 				break;
 			}
 			case "d":
 			{
 				dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row) + "_" + (playerCharacterGameObject.col+1));
-				playerCharacterGameObject.currentDir = CharacterGameObject.dir.West;
+				playerCharacterGameObject.currentDir = CharacterGameObject.dir.East;
 				break;
 			}
 			default:

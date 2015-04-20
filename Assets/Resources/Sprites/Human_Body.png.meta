@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c903ef931c3fe334fa62dea5dba52fb0
-timeCreated: 1429490196
+timeCreated: 1429495582
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -16,6 +16,23 @@ TextureImporter:
     21300018: Human_Body_9
     21300020: Human_Body_10
     21300022: Human_Body_11
+    21300024: human_body_0
+    21300026: human_body_1
+    21300028: human_body_2
+    21300030: human_body_3
+    21300032: human_body_4
+    21300034: human_body_5
+    21300036: human_body_6
+    21300038: human_body_7
+    21300040: human_body_8
+    21300042: human_body_9
+    21300044: human_body_10
+    21300046: human_body_11
+    21300048: human_body_12
+    21300050: human_body_13
+    21300052: human_body_14
+    21300054: human_body_15
+    21300056: human_body_16
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -61,7 +78,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Human_Body_0
+    - name: human_body_0
       rect:
         serializedVersion: 2
         x: 0
@@ -71,7 +88,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_1
+    - name: human_body_1
       rect:
         serializedVersion: 2
         x: 20
@@ -81,7 +98,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_2
+    - name: human_body_2
       rect:
         serializedVersion: 2
         x: 40
@@ -91,7 +108,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_3
+    - name: human_body_3
       rect:
         serializedVersion: 2
         x: 60
@@ -101,7 +118,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_4
+    - name: human_body_4
       rect:
         serializedVersion: 2
         x: 80
@@ -111,7 +128,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_5
+    - name: human_body_5
       rect:
         serializedVersion: 2
         x: 100
@@ -121,7 +138,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_6
+    - name: human_body_6
       rect:
         serializedVersion: 2
         x: 120
@@ -131,7 +148,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_7
+    - name: human_body_7
       rect:
         serializedVersion: 2
         x: 140
@@ -141,7 +158,27 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_8
+    - name: human_body_8
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 180
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: human_body_9
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 180
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: human_body_10
       rect:
         serializedVersion: 2
         x: 0
@@ -151,7 +188,17 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_9
+    - name: human_body_11
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 160
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: human_body_12
       rect:
         serializedVersion: 2
         x: 40
@@ -161,7 +208,17 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_10
+    - name: human_body_13
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 160
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: human_body_14
       rect:
         serializedVersion: 2
         x: 80
@@ -171,15 +228,25 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Human_Body_11
+    - name: human_body_15
       rect:
         serializedVersion: 2
-        x: 120
+        x: 100
         y: 160
         width: 20
         height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: human_body_16
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 87
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
