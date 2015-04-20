@@ -10,6 +10,7 @@ public class RunOverworld : MonoBehaviour
 	public Calendar cal;
 	public GameObject player;
 	public CharacterGameObject playerCharacterGameObject;
+	public PermanentData permanentData;
 
 	public OverworldState currentState;
 
@@ -107,6 +108,8 @@ public class RunOverworld : MonoBehaviour
 				if(dest.GetComponent<Cell>().isWalkable)
 				{
 					playerCharacterGameObject.path.Add (dest);
+					//playerCharacterGameObject.gameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/human_body_walk_s");
+					playerCharacterGameObject.currentAnimation ("walk");
 					currentState = OverworldState.Moving;
 				}
             }
@@ -136,6 +139,8 @@ public class RunOverworld : MonoBehaviour
 				
 				currentCharacter.row = currentCharacter.path [0].GetComponent<Cell> ().row;
 				currentCharacter.col = currentCharacter.path [0].GetComponent<Cell> ().col;
+				currentCharacter.currentAnimation ("idle");
+				//currentCharacter.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/human_body_idle_s");
 
 				currentCharacter.path.Clear ();
 				return true;
@@ -160,8 +165,8 @@ public class RunOverworld : MonoBehaviour
 				
 				currentCharacter.path.Clear ();
 
-				allData.currentLevel = destCell.doorLevel;
-				allData.currentDoorNum = destCell.doorNum;
+				permanentData.currentLevel = destCell.doorLevel;
+				permanentData.currentDoorNum = destCell.doorNum;
 
 				currentState = OverworldState.GoingThroughDoor;
 

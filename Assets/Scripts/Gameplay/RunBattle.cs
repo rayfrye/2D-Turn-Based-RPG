@@ -138,7 +138,7 @@ public class RunBattle : MonoBehaviour
 
 	CharacterGameObject getNearestTarget(CharacterGameObject currentCharacter)
 	{
-		GameObject[] potentialTargets = GameObject.FindGameObjectsWithTag (currentCharacter.enemyFactionTag);
+		GameObject[] potentialTargets = GameObject.FindGameObjectsWithTag ("NPC");
 		int compareDistance = 99999;
 		CharacterGameObject target = currentCharacter;
 
@@ -146,11 +146,14 @@ public class RunBattle : MonoBehaviour
 		{
 			int tempDistance = pathfinder.calcDistance(currentCharacter, potentialTarget.GetComponent<CharacterGameObject>());
 
-			if(tempDistance  < compareDistance)
+			if(potentialTarget.GetComponent<CharacterGameObject>().faction == currentCharacter.enemyFaction)
 			{
-				compareDistance = tempDistance;
-				currentCharacter.distanceToTarget = tempDistance;
-				target = potentialTarget.GetComponent<CharacterGameObject>();
+				if(tempDistance  < compareDistance)
+				{
+					compareDistance = tempDistance;
+					currentCharacter.distanceToTarget = tempDistance;
+					target = potentialTarget.GetComponent<CharacterGameObject>();
+				}
 			}
 		}
 

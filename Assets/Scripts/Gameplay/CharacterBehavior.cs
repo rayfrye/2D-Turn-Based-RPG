@@ -39,7 +39,7 @@ public class CharacterBehavior : MonoBehaviour
 
 	public void getTarget()
 	{
-		potentialTargets = GameObject.FindGameObjectsWithTag(characterGameObject.enemyFactionTag).ToList();
+		potentialTargets = GameObject.FindGameObjectsWithTag("NPC").ToList();
 		float tempDistance = 99999;
 		GameObject tempTarget = gameObject;
 		
@@ -47,11 +47,14 @@ public class CharacterBehavior : MonoBehaviour
 		{
 			Debug.Log ("Should there be a more advanced way than just finding the nearest target? Can we find the highest priority target?");
 			float tempTargetDistance = (transform.position - potentialTarget.transform.position).sqrMagnitude;
-			
-			if(tempTargetDistance < tempDistance)
+
+			if(potentialTarget.GetComponent<CharacterGameObject>().faction == characterGameObject.enemyFaction)
 			{
-				tempDistance = tempTargetDistance;
-				tempTarget = potentialTarget;
+				if(tempTargetDistance < tempDistance)
+				{
+					tempDistance = tempTargetDistance;
+					tempTarget = potentialTarget;
+				}
 			}
 		}
 		

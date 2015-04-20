@@ -9,8 +9,8 @@ public class AllData : MonoBehaviour
 	Calendar cal;
 
 	public string currentLevel;
-	public int currentDoorNum = 0;
-
+	public int currentDoorNum ;
+	
 	public int playerCharacterID;
 
 	public CreateCharacterClass createCharacterClass;
@@ -25,6 +25,7 @@ public class AllData : MonoBehaviour
 	public ReadCellData readCellData;
 	public bool finishedLoading = false;
 	public GameObject player;
+	public PermanentData permanentData;
 
 	public Font arial;
 
@@ -62,16 +63,28 @@ public class AllData : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		createPermanentData ();
+
 		currentState = gameState.Overworld;
 
 		getComponents();
 		createFolders();
 		loadData ();
+	}
 
-		DontDestroyOnLoad(this);
-		DontDestroyOnLoad (GameObject.Find ("Main Camera"));
-		DontDestroyOnLoad(GameObject.Find ("Canvas"));
-		DontDestroyOnLoad(GameObject.Find ("EventSystem"));
+	public void createPermanentData()
+	{
+		GameObject tempPermanentData = GameObject.Find ("PermanentData");
+
+		if (tempPermanentData == null) 
+		{
+			GameObject newPermanentData = new GameObject();
+			newPermanentData.name = "PermanentData";
+			PermanentData permanentDataScript = newPermanentData.AddComponent<PermanentData>();
+			permanentDataScript.currentDoorNum = 0;
+			permanentDataScript.currentLevel = "Test Level";
+			permanentDataScript.playerCharacterID = 0;
+		}
 	}
 
 	public void createFolders()
@@ -95,6 +108,11 @@ public class AllData : MonoBehaviour
 
 	public void getComponents()
 	{
+		permanentData = GameObject.Find ("PermanentData").GetComponent<PermanentData> ();
+		currentLevel = permanentData.currentLevel;
+		currentDoorNum = permanentData.currentDoorNum;
+		playerCharacterID = permanentData.playerCharacterID;
+		
 		cal = GameObject.Find("GameData").GetComponent<Calendar>();
 		canvas = GameObject.Find ("Canvas");
 
@@ -153,6 +171,7 @@ public class AllData : MonoBehaviour
 			runOverworld.currentState = RunOverworld.OverworldState.Idle;
 			runOverworld.player = player;
 			runOverworld.playerCharacterGameObject = player.GetComponent<CharacterGameObject>();
+			runOverworld.permanentData = permanentData;
 
 			finishedLoading = true;
 			break;
