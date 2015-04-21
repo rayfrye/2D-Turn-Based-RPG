@@ -172,6 +172,8 @@ public class AllData : MonoBehaviour
 			runOverworld.player = player;
 			runOverworld.playerCharacterGameObject = player.GetComponent<CharacterGameObject>();
 			runOverworld.permanentData = permanentData;
+			runOverworld.currentDialogueIndex = 0;
+			runOverworld.DialogueCanvas = GameObject.Find ("DialogueCanvas").GetComponent<Canvas>();
 
 			finishedLoading = true;
 			break;
@@ -282,6 +284,7 @@ public class AllData : MonoBehaviour
 			,false
 			,0
 			,0
+			,new List<string>()
 		);
 
 		createCharacterGameObject.createCharacterGameObject
@@ -296,6 +299,7 @@ public class AllData : MonoBehaviour
 			,false
 			,3
 			,6
+			,new List<string>()
 		);
 
 		createCharacterGameObject.createCharacterGameObject
@@ -310,6 +314,7 @@ public class AllData : MonoBehaviour
 			,false
 			,3
 			,3
+			,new List<string>()
 		);
 	}
 

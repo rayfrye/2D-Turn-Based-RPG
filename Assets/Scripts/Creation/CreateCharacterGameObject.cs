@@ -20,6 +20,7 @@ public class CreateCharacterGameObject : MonoBehaviour
 		,bool isPlayer
 		,int row
 		,int col
+		,List<string> dialogue
 	)
 	{
 		GameObject newCharacterGameObject = new GameObject();
@@ -30,7 +31,7 @@ public class CreateCharacterGameObject : MonoBehaviour
 		setupTransform (newCharacterGameObject.transform, pos, new Vector3 (1, 1, 1));
 		setupSpriteRenderer (newCharacterGameObject, "Sprites/human_body", 5);
 		setupMoveCharacter (newCharacterGameObject, cal, character);
-		setupCharacter (newCharacterGameObject, character, allData, enemyFaction, pos, isPlayer, row, col);
+		setupCharacter (newCharacterGameObject, character, allData, enemyFaction, pos, isPlayer, row, col, dialogue);
 		setupAnimation (newCharacterGameObject, newCharacterGameObject, "body");
 		setupEquipment(newCharacterGameObject);
 
@@ -116,7 +117,7 @@ public class CreateCharacterGameObject : MonoBehaviour
 		moveCharacter.cal = cal;
 	}
 
-	public void setupCharacter(GameObject characterGameObject, Character character, AllData allData, string enemyFaction, Vector3 pos, bool isPlayer, int row, int col)
+	public void setupCharacter(GameObject characterGameObject, Character character, AllData allData, string enemyFaction, Vector3 pos, bool isPlayer, int row, int col, List<string> dialogue)
 	{
 		CharacterGameObject characterGameObjectScript = characterGameObject.AddComponent<CharacterGameObject> ();
 
@@ -129,6 +130,7 @@ public class CreateCharacterGameObject : MonoBehaviour
 		characterGameObjectScript.isPlayer = isPlayer;
 		characterGameObjectScript.path = new List<GameObject> ();
 		characterGameObjectScript.currentDir = CharacterGameObject.dir.South;
+		characterGameObjectScript.dialogue = dialogue;
 	}
 
 }

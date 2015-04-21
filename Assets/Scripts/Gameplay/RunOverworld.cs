@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,9 @@ public class RunOverworld : MonoBehaviour
 	public GameObject player;
 	public CharacterGameObject playerCharacterGameObject;
 	public PermanentData permanentData;
+	public int currentDialogueIndex;
+	public GameObject dialogueTarget;
+	public Canvas DialogueCanvas;
 
 	public OverworldState currentState;
 
@@ -18,7 +22,8 @@ public class RunOverworld : MonoBehaviour
 	{
 		Idle
 		,Moving
-		,Dialogue
+		,DialogueWithNPC
+		,DialogueWithEnvironment
 		,Shopping
 		,Inventory
 		,GoingThroughDoor
@@ -54,6 +59,22 @@ public class RunOverworld : MonoBehaviour
 			Application.LoadLevel("Battle");
 			break;
 		}
+		case OverworldState.DialogueWithEnvironment:
+		{
+			if(playerInDialogueWithEnvironment ())
+			{
+				currentState = OverworldState.Idle;
+			}
+			break;
+		}
+		case OverworldState.DialogueWithNPC:
+		{
+			if(playerInDialogueWithNPC ())
+			{
+				currentState = OverworldState.Idle;
+			}
+			break;
+		}
 		default:
 		{
 			break;
@@ -64,37 +85,73 @@ public class RunOverworld : MonoBehaviour
 	void movementInput()
 	{
 		string keyPressed = Input.inputString;
-
 		
-
 		if (keyPressed.Length > 0) 
 		{
-			GameObject dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row) + "_" + playerCharacterGameObject.col);
+			GameObject currentCell = GameObject.Find ("Cell_" + (playerCharacterGameObject.row) + "_" + playerCharacterGameObject.col);
+			GameObject dest = currentCell;
+			GameObject targetCell = currentCell;
+			CharacterGameObject.dir oppositeDir = CharacterGameObject.dir.North;
 
 			switch(keyPressed)
 			{
 			case "s":
 			{
-				dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row+1) + "_" + playerCharacterGameObject.col);
+				dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row + 1) + "_" + playerCharacterGameObject.col);
 				playerCharacterGameObject.currentDir = CharacterGameObject.dir.South;
 				break;
 			}
 			case "w":
 			{
-				dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row-1) + "_" + playerCharacterGameObject.col);
+				dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row - 1) + "_" + playerCharacterGameObject.col);
 				playerCharacterGameObject.currentDir = CharacterGameObject.dir.North;
 				break;
 			}
 			case "a":
 			{
-				dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row) + "_" + (playerCharacterGameObject.col-1));
+				dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row) + "_" + (playerCharacterGameObject.col - 1));
 				playerCharacterGameObject.currentDir = CharacterGameObject.dir.West;
 				break;
 			}
 			case "d":
 			{
-				dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row) + "_" + (playerCharacterGameObject.col+1));
+				dest = GameObject.Find ("Cell_" + (playerCharacterGameObject.row) + "_" + (playerCharacterGameObject.col + 1));
 				playerCharacterGameObject.currentDir = CharacterGameObject.dir.East;
+				break;
+			}
+			case "e":
+			{
+				switch(playerCharacterGameObject.currentDir)
+				{
+				case CharacterGameObject.dir.North:
+				{
+					targetCell = GameObject.Find ("Cell_" + (playerCharacterGameObject.row - 1) + "_" + (playerCharacterGameObject.col));
+					oppositeDir = CharacterGameObject.dir.South;
+					break;
+				}
+				case CharacterGameObject.dir.South:
+				{
+					targetCell = GameObject.Find ("Cell_" + (playerCharacterGameObject.row + 1) + "_" + (playerCharacterGameObject.col));
+					oppositeDir = CharacterGameObject.dir.North;
+					break;
+				}
+				case CharacterGameObject.dir.West:
+				{
+					targetCell = GameObject.Find ("Cell_" + (playerCharacterGameObject.row) + "_" + (playerCharacterGameObject.col - 1));
+					oppositeDir = CharacterGameObject.dir.East;
+					break;
+				}
+				case CharacterGameObject.dir.East:
+				{
+					targetCell = GameObject.Find ("Cell_" + (playerCharacterGameObject.row) + "_" + (playerCharacterGameObject.col + 1));
+					oppositeDir = CharacterGameObject.dir.West;
+					break;
+				}
+				default:
+				{
+					break;
+				}
+				}
 				break;
 			}
 			default:
@@ -103,16 +160,97 @@ public class RunOverworld : MonoBehaviour
 			}
 			}
 
-			if (dest != null) 
+			if (dest != currentCell) 
 			{
 				if(dest.GetComponent<Cell>().isWalkable)
 				{
 					playerCharacterGameObject.path.Add (dest);
-					//playerCharacterGameObject.gameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/human_body_walk_s");
 					playerCharacterGameObject.currentAnimation ("walk");
 					currentState = OverworldState.Moving;
 				}
+				else
+				{
+					playerCharacterGameObject.currentAnimation ("idle");
+				}
             }
+
+			if(targetCell != currentCell)
+			{
+				Cell cell = targetCell.GetComponent<Cell>();
+
+				if(cell != null)
+				{
+					if(cell.hasDialogue == true)
+					{
+						currentDialogueIndex = 0;
+						dialogueTarget = cell.gameObject;
+						currentState = OverworldState.DialogueWithEnvironment;
+					}
+
+					if(cell.hasNPC == true)
+					{
+						currentDialogueIndex = 0;
+						dialogueTarget = cell.NPC;
+						CharacterGameObject npc = dialogueTarget.GetComponent<CharacterGameObject>();
+						npc.currentDir = oppositeDir;
+						npc.currentAnimation ("idle");
+						currentState = OverworldState.DialogueWithNPC;
+					}
+				}
+			}
+		}
+	}
+
+	bool playerInDialogueWithNPC()
+	{
+		string keyPressed = Input.inputString;
+		CharacterGameObject npc = dialogueTarget.GetComponent<CharacterGameObject> ();
+		DialogueCanvas.enabled = true;
+		DialogueCanvas.GetComponentInChildren<Text> ().text = npc.dialogue [currentDialogueIndex];
+		
+		if (keyPressed.Length == 0) 
+		{
+			return false;
+		} 
+		else 
+		{
+			if(currentDialogueIndex < npc.dialogue.Count()-1)
+			{
+				currentDialogueIndex++;
+				keyPressed = "";
+				return false;
+			}
+			else
+			{
+				DialogueCanvas.enabled = false;
+				return true;
+			}
+		}	}
+
+	bool playerInDialogueWithEnvironment()
+	{
+		string keyPressed = Input.inputString;
+		Cell cell = dialogueTarget.GetComponent<Cell> ();
+		DialogueCanvas.enabled = true;
+		DialogueCanvas.GetComponentInChildren<Text> ().text = cell.dialogue [currentDialogueIndex];
+
+		if (keyPressed.Length == 0) 
+		{
+			return false;
+		} 
+		else 
+		{
+			if(currentDialogueIndex < cell.dialogue.Count()-1)
+			{
+				currentDialogueIndex++;
+				keyPressed = "";
+				return false;
+			}
+			else
+			{
+				DialogueCanvas.enabled = false;
+				return true;
+			}
 		}
 	}
 
@@ -140,7 +278,6 @@ public class RunOverworld : MonoBehaviour
 				currentCharacter.row = currentCharacter.path [0].GetComponent<Cell> ().row;
 				currentCharacter.col = currentCharacter.path [0].GetComponent<Cell> ().col;
 				currentCharacter.currentAnimation ("idle");
-				//currentCharacter.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/human_body_idle_s");
 
 				currentCharacter.path.Clear ();
 				return true;

@@ -47,7 +47,8 @@ public class CreateCells : MonoBehaviour
 				setupDoors(grid[row,col], readCellData, newCell);
 				setupCharacter
 				(
-					grid[row,col]
+					newCell
+					, grid[row,col]
 					, readCellData
 					, createCharacterGameObject
 					, cal
@@ -56,12 +57,31 @@ public class CreateCells : MonoBehaviour
 					, row
 					, col
 				);
-
+				setupDialogue (grid[row,col], readCellData, newCell);
 
 
 				setupTextGameObject(newCell,text, font);
 
 				allData.cells[row,col] = newCell;
+			}
+		}
+	}
+
+	public void setupDialogue
+	(
+		string cellValue
+		, ReadCellData readCellData
+		, GameObject newCell	
+	)
+	{
+		Cell cell = newCell.GetComponent<Cell> ();
+
+		for (int i = 0; i < 10; i++) 
+		{
+			if (cellValue.Contains ("dialogue_line_" + i)) 
+			{
+				cell.hasDialogue = true;
+				cell.dialogue.Add (readCellData.getCellValue (cellValue, "dialogue_line_" + i));
 			}
 		}
 	}
@@ -109,7 +129,8 @@ public class CreateCells : MonoBehaviour
 
 	public void setupCharacter
 	(
-		string cellValue
+		GameObject newCell
+		, string cellValue
 		, ReadCellData readCellData
 		, CreateCharacterGameObject createCharacterGameObject
 		, Calendar cal
@@ -119,8 +140,6 @@ public class CreateCells : MonoBehaviour
 		, int col
 	)
 	{
-
-
 		if (cellValue.Contains ("isSpawnPoint")) 
 		{
 			if (readCellData.getCellValue (cellValue, "isSpawnPoint") == "true" 
@@ -128,17 +147,18 @@ public class CreateCells : MonoBehaviour
 			   ) 
 			{
 				allData.player = createCharacterGameObject.createCharacterGameObject
-					(
-						cal
-						, allData.characterGameObjectFolder
-						, pos
-						, allData.characters [allData.playerCharacterID]
-						, "Player"
-						, "Good"
-						, "Bad"
-						, true
-						, row
-						, col
+				(
+					cal
+					, allData.characterGameObjectFolder
+					, pos
+					, allData.characters [allData.playerCharacterID]
+					, "Player"
+					, "Good"
+					, "Bad"
+					, true
+					, row
+					, col
+					,new List<string>()
 				);
 				
 				GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<SmoothCamera2D> ().target = allData.player.transform;
@@ -149,7 +169,10 @@ public class CreateCells : MonoBehaviour
 		{
 			int characterID = int.Parse (readCellData.getCellValue(cellValue,"characterID"));
 
-			createCharacterGameObject.createCharacterGameObject
+			List<string> dialogue = new List<string>();
+			dialogue.Add ("I'm an NPC");
+
+			GameObject newNPC = createCharacterGameObject.createCharacterGameObject
 			(
 				cal
 				,allData.characterGameObjectFolder
@@ -161,7 +184,11 @@ public class CreateCells : MonoBehaviour
 				,false
 				,row
 				,col
+				,dialogue
 			);
+
+			newCell.GetComponent<Cell>().hasNPC = true;
+			newCell.GetComponent<Cell>().NPC = newNPC;
 		}
 	}
 

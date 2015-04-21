@@ -35,6 +35,9 @@ public class CharacterGameObject : MonoBehaviour
 	public int currentHealth;
 	
 	public dir currentDir;
+
+	public List<string> dialogue = new List<string>();
+
 	public enum dir
 	{
 		North

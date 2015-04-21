@@ -31,4 +31,9 @@ public class Cell : MonoBehaviour
 
 	public List<Cell> neighborCells = new List<Cell>();
 
+	public List<string> dialogue = new List<string>();
+	public bool hasNPC;
+	public GameObject NPC;
+	public bool hasDialogue;
+
 }
