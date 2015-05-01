@@ -7,7 +7,7 @@ public class Dialogue : MonoBehaviour
 	public int id;
 
 	public List<string> dialogueStepText = new List<string>();
-	public List<string[]> dialogueOptions = new List<string[]>();
-	public List<string[]> dialogueActions = new List<string[]>();
+	public List<List<string>> dialogueOptions = new List<List<string>>();
+	public List<List<string>> dialogueActions = new List<List<string>>();
 
 }

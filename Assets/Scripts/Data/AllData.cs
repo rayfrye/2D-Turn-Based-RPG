@@ -26,6 +26,7 @@ public class AllData : MonoBehaviour
 	public bool finishedLoading = false;
 	public GameObject player;
 	public PermanentData permanentData;
+	public CreateDialogue createDialogue;
 
 	public Font arial;
 
@@ -34,6 +35,7 @@ public class AllData : MonoBehaviour
 	public GameObject characterFolder;
 	public GameObject characterGameObjectFolder;
 	public GameObject cellFolder;
+	public GameObject dialogueFolder;
 	public GameObject canvas;
 	#endregion DataFolders
 
@@ -50,6 +52,7 @@ public class AllData : MonoBehaviour
 	public List<CharacterClass> characterClasses = new List<CharacterClass>();
 	public List<Character> characters = new List<Character>();
 	public List<GameObject> characterGameObjects = new List<GameObject>();
+	public List<Dialogue> dialogues = new List<Dialogue> ();
 	public GameObject[,] cells = new GameObject[0,0];
 	
 	public enum gameState
@@ -104,6 +107,10 @@ public class AllData : MonoBehaviour
 		cellFolder = new GameObject();
 		cellFolder.name = "Cell Folder";
 		cellFolder.transform.parent = canvas.transform;
+
+		dialogueFolder = new GameObject ();
+		dialogueFolder.name = "Dialogue Folder";
+		dialogueFolder.transform.parent = transform;
 	}
 
 	public void getComponents()
@@ -133,6 +140,9 @@ public class AllData : MonoBehaviour
 
 		pathfinder = gameObject.AddComponent<Pathfinder>();
 		pathfinder.GetComponent<Pathfinder> ().allData = this;
+
+		createDialogue = gameObject.AddComponent<CreateDialogue> ();
+		createDialogue.GetComponent<CreateDialogue>().allData = this;
 	}
 
 	public void loadData()
@@ -162,6 +172,7 @@ public class AllData : MonoBehaviour
 		case gameState.Overworld:
 		{
 			loadClasses();
+			loadDialogue();
 			loadCharacters();
 			loadCells(currentLevel);
 
@@ -183,6 +194,14 @@ public class AllData : MonoBehaviour
 			break;
 		}
 		}
+	}
+
+	public void loadDialogue()
+	{
+		createDialogue.createDialogue
+		(
+			dialogueFolder
+		);
 	}
 
 	public void loadClasses()

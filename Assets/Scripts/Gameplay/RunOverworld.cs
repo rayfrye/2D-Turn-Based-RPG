@@ -206,7 +206,7 @@ public class RunOverworld : MonoBehaviour
 		string keyPressed = Input.inputString;
 		CharacterGameObject npc = dialogueTarget.GetComponent<CharacterGameObject> ();
 		DialogueCanvas.enabled = true;
-		DialogueCanvas.GetComponentInChildren<Text> ().text = npc.dialogue [currentDialogueIndex];
+		DialogueCanvas.GetComponentInChildren<Text> ().text = allData.dialogues [0].dialogueStepText [currentDialogueIndex];//npc.dialogue [currentDialogueIndex];
 		
 		if (keyPressed.Length == 0) 
 		{
@@ -214,7 +214,7 @@ public class RunOverworld : MonoBehaviour
 		} 
 		else 
 		{
-			if(currentDialogueIndex < npc.dialogue.Count()-1)
+			if(currentDialogueIndex < allData.dialogues [0].dialogueStepText.Count - 1)//npc.dialogue.Count()-1)
 			{
 				currentDialogueIndex++;
 				keyPressed = "";
@@ -225,7 +225,8 @@ public class RunOverworld : MonoBehaviour
 				DialogueCanvas.enabled = false;
 				return true;
 			}
-		}	}
+		}	
+	}
 
 	bool playerInDialogueWithEnvironment()
 	{
