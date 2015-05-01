@@ -206,7 +206,7 @@ public class RunOverworld : MonoBehaviour
 		string keyPressed = Input.inputString;
 		CharacterGameObject npc = dialogueTarget.GetComponent<CharacterGameObject> ();
 		DialogueCanvas.enabled = true;
-		DialogueCanvas.GetComponentInChildren<Text> ().text = allData.dialogues [0].dialogueStepText [currentDialogueIndex];//npc.dialogue [currentDialogueIndex];
+		DialogueCanvas.GetComponentInChildren<Text> ().text = allData.dialogues [currentDialogueIndex].dialogueStepText;//npc.dialogue [currentDialogueIndex];
 		
 		if (keyPressed.Length == 0) 
 		{
@@ -214,7 +214,8 @@ public class RunOverworld : MonoBehaviour
 		} 
 		else 
 		{
-			if(currentDialogueIndex < allData.dialogues [0].dialogueStepText.Count - 1)//npc.dialogue.Count()-1)
+			//check to see if dialogue id has actions. if so, check what those actions are and apply them.
+			if(currentDialogueIndex < allData.dialogues.Count - 1)
 			{
 				currentDialogueIndex++;
 				keyPressed = "";

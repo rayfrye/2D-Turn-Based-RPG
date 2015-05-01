@@ -27,6 +27,7 @@ public class AllData : MonoBehaviour
 	public GameObject player;
 	public PermanentData permanentData;
 	public CreateDialogue createDialogue;
+	public CreateQuest createQuest;
 
 	public Font arial;
 
@@ -36,6 +37,7 @@ public class AllData : MonoBehaviour
 	public GameObject characterGameObjectFolder;
 	public GameObject cellFolder;
 	public GameObject dialogueFolder;
+	public GameObject questFolder;
 	public GameObject canvas;
 	#endregion DataFolders
 
@@ -53,6 +55,7 @@ public class AllData : MonoBehaviour
 	public List<Character> characters = new List<Character>();
 	public List<GameObject> characterGameObjects = new List<GameObject>();
 	public List<Dialogue> dialogues = new List<Dialogue> ();
+	public List<Quest> quests = new List<Quest>();
 	public GameObject[,] cells = new GameObject[0,0];
 	
 	public enum gameState
@@ -111,6 +114,10 @@ public class AllData : MonoBehaviour
 		dialogueFolder = new GameObject ();
 		dialogueFolder.name = "Dialogue Folder";
 		dialogueFolder.transform.parent = transform;
+
+		questFolder = new GameObject ();
+		questFolder.name = "Quest Folder";
+		questFolder.transform.parent = transform;
 	}
 
 	public void getComponents()
@@ -143,6 +150,9 @@ public class AllData : MonoBehaviour
 
 		createDialogue = gameObject.AddComponent<CreateDialogue> ();
 		createDialogue.GetComponent<CreateDialogue>().allData = this;
+
+		createQuest = gameObject.AddComponent<CreateQuest> ();
+		createQuest.GetComponent<CreateQuest> ().allData = this;
 	}
 
 	public void loadData()
@@ -173,6 +183,7 @@ public class AllData : MonoBehaviour
 		{
 			loadClasses();
 			loadDialogue();
+			loadQuests();
 			loadCharacters();
 			loadCells(currentLevel);
 
@@ -194,6 +205,14 @@ public class AllData : MonoBehaviour
 			break;
 		}
 		}
+	}
+
+	public void loadQuests()
+	{
+		createQuest.createQuest
+		(
+			questFolder
+		);
 	}
 
 	public void loadDialogue()

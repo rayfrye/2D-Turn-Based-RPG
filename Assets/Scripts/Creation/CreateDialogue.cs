@@ -13,8 +13,9 @@ public class CreateDialogue : MonoBehaviour
 		Dialogue newDialogue = folder.AddComponent<Dialogue> ();
 
 		newDialogue.id = 0;
-		newDialogue.dialogueStepText.Add ("I'm an NPC");
-		newDialogue.dialogueStepText.Add ("I'm really just here to test the dialogue");
+		newDialogue.dialogueStepText = "I'm an NPC";
+		newDialogue.dialogueStepHasActions = true;
+		newDialogue.dialogueActions.Add ("questID:0|step:0|");
 
 		allData.dialogues.Add (newDialogue);
 
