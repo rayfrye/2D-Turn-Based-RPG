@@ -8,18 +8,19 @@ public class CreateQuest : MonoBehaviour
 	public void createQuest
 	(
 		GameObject folder
+		,int id
+		,string name
+		,string description
+		,bool isComplete
 	)
 	{
 		Quest newQuest = folder.AddComponent<Quest> ();
 		
-		newQuest.id = 0;
-		newQuest.name = "Starting Out";
-		newQuest.description = "Dummy quest for dummies";
-		newQuest.isComplete = false;
+		newQuest.id = id;
+		newQuest.name = name;
+		newQuest.description = description;
+		newQuest.isComplete = isComplete;
 		
 		allData.quests.Add (newQuest);
-		
 	}
-
-
 }

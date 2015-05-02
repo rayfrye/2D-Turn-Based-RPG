@@ -224,6 +224,19 @@ public class AllData : MonoBehaviour
 		createQuest.createQuest
 		(
 			questFolder
+			,0
+			,"Starting Out"
+			,"Default starting quest"
+			,true
+		);
+
+		createQuest.createQuest
+		(
+			questFolder
+			,1
+			,"testng first quest"
+			,"Testing"
+			,false
 		);
 	}
 
@@ -236,6 +249,9 @@ public class AllData : MonoBehaviour
 		List<int> tempOptionDestinations = new List<int>();
 		tempOptionDestinations.Add (1);
 		tempOptionDestinations.Add (2);
+
+		List<string> tempActions = new List<string>();
+		tempActions.Add("questCompleted:1");
 
 		createDialogue.createDialogue
 		(
@@ -266,12 +282,25 @@ public class AllData : MonoBehaviour
 			dialogueFolder
 			,2
 			,"Cool"
+			,true
+			,tempActions
+			,false
+			,new List<string>()
+			,new List<int>()
+		);
+
+		createDialogue.createDialogue
+		(
+			dialogueFolder
+			,3
+			,"Good job doing that thing."
 			,false
 			,new List<string>()
 			,false
 			,new List<string>()
 			,new List<int>()
 		);
+
 	}
 
 	public void loadClasses()
@@ -322,13 +351,24 @@ public class AllData : MonoBehaviour
 		 * CharacterClass characterClass
 		 */
 
+		List<int> dialogueIDs = new List<int>();
+		dialogueIDs.Add (0);
+		dialogueIDs.Add (3);
+
+		List<int> questIDPrereqs = new List<int>();
+		questIDPrereqs.Add (0);
+		questIDPrereqs.Add (1);
+
 		Debug.Log ("Creating Characters manually - at some point will create randomly.");
+
 		createCharacter.createCharacter
 		(
 			characterFolder
 			,"John"
 			,0
 			,characterClasses[0]
+			,dialogueIDs
+			,questIDPrereqs
 		);
 		
 		createCharacter.createCharacter
@@ -337,6 +377,8 @@ public class AllData : MonoBehaviour
 			,"George"
 			,1
 			,characterClasses[1]
+			,dialogueIDs
+			,questIDPrereqs
 		);
 
 		createCharacter.createCharacter
@@ -345,6 +387,8 @@ public class AllData : MonoBehaviour
 			,"Ephram"
 			,2
 			,characterClasses[1]
+			,dialogueIDs
+			,questIDPrereqs
 		);
 	}
 

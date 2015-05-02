@@ -25,13 +25,15 @@ public class Character : MonoBehaviour
 		{
 			if(quests[questIDPrereqs[i]].isComplete)
 			{
-				currentIndex = i;
+				currentIndex = dialogueIDs[i];
 			}
 			else
 			{
 				i = questIDPrereqs.Count;
 			}
 		}
+
+		print (currentIndex);
 
 		return currentIndex;
 	}

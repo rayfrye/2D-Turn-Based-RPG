@@ -217,8 +217,7 @@ public class RunOverworld : MonoBehaviour
 	void setupPlayerNPCDialogue()
 	{
 		currentButton = 0;
-
-
+	
 		CharacterGameObject npc = dialogueTarget.GetComponent<CharacterGameObject> ();
 		dialoguePanel.SetActive(true);
 		dialoguePanel.GetComponentInChildren<Text> ().text = allData.dialogues [currentDialogueIndex].text;
@@ -294,8 +293,7 @@ public class RunOverworld : MonoBehaviour
 			{
 				if(allData.dialogues[currentDialogueIndex].hasActions)
 				{
-					
-					
+					doDialogueAction(allData.dialogues[currentDialogueIndex].actions);
 				}
 				
 				dialoguePanel.SetActive (false);
@@ -305,14 +303,43 @@ public class RunOverworld : MonoBehaviour
 				
 				return true;
 			}
-
-
 		}
 	}
 
-	void doDialogueAction()
+	void doDialogueAction(List<string> actions)
 	{
+		foreach(string action in actions)
+		{
+			switch(getActionType(action))
+			{
+			case "questCompleted":
+			{
+				int questID = int.Parse (getActionValue(action,0));
+				allData.quests[questID].isComplete = true;
+				break;
+			}
+			default:
+			{
+				break;
+			}
+			}
+		}
+	}
 
+	string getActionType(string action)
+	{
+		int index = action.IndexOf (":");
+		string actionType = action.Substring (0,index);
+
+		return actionType;
+	}
+
+	string getActionValue(string action, int actionValueIndex)
+	{
+		int index = action.IndexOf (":");
+		string actionValue = action.Substring (index+1,action.Length-index-1);
+
+		return actionValue;
 	}
 
 	void handleInput(int maxOptions)

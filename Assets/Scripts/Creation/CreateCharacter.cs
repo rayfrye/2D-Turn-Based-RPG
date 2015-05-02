@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CreateCharacter : MonoBehaviour 
 {
@@ -11,6 +12,8 @@ public class CreateCharacter : MonoBehaviour
 		,string characterName
 		,int characterID
 		,CharacterClass characterClass
+		,List<int> dialogueIDs
+		,List<int> questIDPrereqs
 	)
 	{
 		Character newCharacter = folder.AddComponent<Character>();
@@ -18,6 +21,9 @@ public class CreateCharacter : MonoBehaviour
 		newCharacter.characterName = characterName;
 		newCharacter.characterID = characterID;
 		newCharacter.characterClass = characterClass;
+
+		newCharacter.dialogueIDs = dialogueIDs;
+		newCharacter.questIDPrereqs = questIDPrereqs;
 
 		allData.characters.Add (newCharacter);
 	}
