@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 
 public class AllData : MonoBehaviour 
 {
@@ -195,7 +197,17 @@ public class AllData : MonoBehaviour
 			runOverworld.playerCharacterGameObject = player.GetComponent<CharacterGameObject>();
 			runOverworld.permanentData = permanentData;
 			runOverworld.currentDialogueIndex = 0;
-			runOverworld.DialogueCanvas = GameObject.Find ("DialogueCanvas").GetComponent<Canvas>();
+			runOverworld.dialoguePanel = GameObject.Find ("DialoguePanel");
+			runOverworld.dialoguePanel.SetActive (false);
+			runOverworld.dialogueOptionButtons.Add(GameObject.Find ("DialogueButtonOption1"));
+			runOverworld.dialogueOptionButtons.Add(GameObject.Find ("DialogueButtonOption2"));
+			runOverworld.dialogueOptionButtons.Add(GameObject.Find ("DialogueButtonOption3"));
+			runOverworld.dialogueOptionButtons[0].SetActive (false);
+			runOverworld.dialogueOptionButtons[1].SetActive (false);
+			runOverworld.dialogueOptionButtons[2].SetActive (false);
+			runOverworld.dialogueOptionPanel = GameObject.Find ("DialogueOptionPanel");
+			runOverworld.dialogueOptionPanel.SetActive (false);
+			runOverworld.eventSystem = GameObject.Find ("EventSystem").GetComponent<EventSystem>();
 
 			finishedLoading = true;
 			break;
@@ -217,9 +229,48 @@ public class AllData : MonoBehaviour
 
 	public void loadDialogue()
 	{
+		List<string> tempOptions = new List<string>();
+		tempOptions.Add ("I'm not");
+		tempOptions.Add ("Me too");
+
+		List<int> tempOptionDestinations = new List<int>();
+		tempOptionDestinations.Add (1);
+		tempOptionDestinations.Add (2);
+
 		createDialogue.createDialogue
 		(
 			dialogueFolder
+			,0
+			,"I'm an NPC."
+			,false
+			,new List<string>()
+			,true
+			,tempOptions
+			,tempOptionDestinations
+		);
+
+		createDialogue.createDialogue
+		(
+			dialogueFolder
+			,1
+			,"Weird"
+			,false
+			,new List<string>()
+			,false
+			,new List<string>()
+			,new List<int>()
+		);
+
+		createDialogue.createDialogue
+		(
+			dialogueFolder
+			,2
+			,"Cool"
+			,false
+			,new List<string>()
+			,false
+			,new List<string>()
+			,new List<int>()
 		);
 	}
 

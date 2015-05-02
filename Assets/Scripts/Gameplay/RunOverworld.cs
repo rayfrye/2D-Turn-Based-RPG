@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class RunOverworld : MonoBehaviour 
 {
@@ -14,7 +15,12 @@ public class RunOverworld : MonoBehaviour
 	public PermanentData permanentData;
 	public int currentDialogueIndex;
 	public GameObject dialogueTarget;
-	public Canvas DialogueCanvas;
+	public GameObject dialoguePanel;
+	public GameObject dialogueOptionPanel;
+	public List<GameObject> dialogueOptionButtons = new List<GameObject>();
+	public EventSystem eventSystem;
+
+	public int currentButton = 0;
 
 	public OverworldState currentState;
 
@@ -22,11 +28,12 @@ public class RunOverworld : MonoBehaviour
 	{
 		Idle
 		,Moving
-		,DialogueWithNPC
+		,SetupDialogueWithNPC
 		,DialogueWithEnvironment
 		,Shopping
 		,Inventory
 		,GoingThroughDoor
+		,DoDialogueWithNPC
 	}
 
 	void Update()
@@ -67,7 +74,12 @@ public class RunOverworld : MonoBehaviour
 			}
 			break;
 		}
-		case OverworldState.DialogueWithNPC:
+		case OverworldState.SetupDialogueWithNPC:
+		{
+			setupPlayerNPCDialogue();
+			break;
+		}
+		case OverworldState.DoDialogueWithNPC:
 		{
 			if(playerInDialogueWithNPC ())
 			{
@@ -194,47 +206,159 @@ public class RunOverworld : MonoBehaviour
 						CharacterGameObject npc = dialogueTarget.GetComponent<CharacterGameObject>();
 						npc.currentDir = oppositeDir;
 						npc.currentAnimation ("idle");
-						currentState = OverworldState.DialogueWithNPC;
+						currentDialogueIndex = npc.character.currentDialogueIndex(allData.quests);
+						currentState = OverworldState.SetupDialogueWithNPC;
 					}
 				}
 			}
 		}
 	}
 
+	void setupPlayerNPCDialogue()
+	{
+		currentButton = 0;
+
+
+		CharacterGameObject npc = dialogueTarget.GetComponent<CharacterGameObject> ();
+		dialoguePanel.SetActive(true);
+		dialoguePanel.GetComponentInChildren<Text> ().text = allData.dialogues [currentDialogueIndex].text;
+
+		if(allData.dialogues[currentDialogueIndex].hasOptions)
+		{
+			dialogueOptionPanel.SetActive(true);
+
+			switch(allData.dialogues[currentDialogueIndex].options.Count)
+			{
+			case 1:
+			{
+				dialogueOptionButtons[0].SetActive (true);
+				dialogueOptionButtons[0].GetComponentInChildren<Text>().text = allData.dialogues [currentDialogueIndex].options[0];
+				//dialogueOptionButtons[1].SetActive (false);
+				//dialogueOptionButtons[3].SetActive (false);
+				break;
+			}
+			case 2:
+			{
+				dialogueOptionButtons[0].SetActive (true);
+				dialogueOptionButtons[0].GetComponentInChildren<Text>().text = allData.dialogues [currentDialogueIndex].options[0];
+				dialogueOptionButtons[1].SetActive (true);
+				dialogueOptionButtons[1].GetComponentInChildren<Text>().text = allData.dialogues [currentDialogueIndex].options[1];
+				//dialogueOptionButtons[3].SetActive (false);
+				break;
+			}
+			case 3:
+			{
+				dialogueOptionButtons[0].SetActive (true);
+				dialogueOptionButtons[1].SetActive (true);
+				dialogueOptionButtons[3].SetActive (true);
+				break;
+			}
+			default:
+			{
+				break;
+			}
+			}
+		}
+
+		currentState = OverworldState.DoDialogueWithNPC;
+	}
+
 	bool playerInDialogueWithNPC()
 	{
 		string keyPressed = Input.inputString;
+		eventSystem.SetSelectedGameObject(dialogueOptionButtons[currentButton]);
+		handleInput(allData.dialogues[currentDialogueIndex].options.Count - 1);
 		CharacterGameObject npc = dialogueTarget.GetComponent<CharacterGameObject> ();
-		DialogueCanvas.enabled = true;
-		DialogueCanvas.GetComponentInChildren<Text> ().text = allData.dialogues [currentDialogueIndex].dialogueStepText;//npc.dialogue [currentDialogueIndex];
-		
-		if (keyPressed.Length == 0) 
+
+		if (keyPressed != "e") 
 		{
 			return false;
-		} 
+		}
 		else 
 		{
 			//check to see if dialogue id has actions. if so, check what those actions are and apply them.
-			if(currentDialogueIndex < allData.dialogues.Count - 1)
+			if(allData.dialogues[currentDialogueIndex].hasOptions)
 			{
-				currentDialogueIndex++;
-				keyPressed = "";
+				currentDialogueIndex = allData.dialogues[currentDialogueIndex].optionDests[currentButton];
+
+				dialogueOptionButtons[0].SetActive (false);
+				dialogueOptionButtons[1].SetActive (false);
+				dialogueOptionButtons[2].SetActive (false);
+				dialogueOptionPanel.SetActive (false);
+
+				currentState = OverworldState.SetupDialogueWithNPC;
+
 				return false;
 			}
 			else
 			{
-				DialogueCanvas.enabled = false;
+				if(allData.dialogues[currentDialogueIndex].hasActions)
+				{
+					
+					
+				}
+				
+				dialoguePanel.SetActive (false);
+				dialogueOptionButtons[0].SetActive (false);
+				dialogueOptionButtons[1].SetActive (false);
+				dialogueOptionButtons[2].SetActive (false);
+				
 				return true;
 			}
-		}	
+
+
+		}
+	}
+
+	void doDialogueAction()
+	{
+
+	}
+
+	void handleInput(int maxOptions)
+	{
+		string keyPressed = Input.inputString;
+
+		if(keyPressed.Length > 0)
+		{
+			switch(keyPressed)
+			{
+			case "w":
+			{
+				currentButton--;
+				break;
+			}
+			case "s":
+			{
+				currentButton++;
+				break;
+			}
+			default:
+			{
+				break;
+			}
+			}
+
+			if(currentButton > maxOptions)
+			{
+				currentButton = 0;
+			}
+
+			if(currentButton < 0)
+			{
+				currentButton = maxOptions;
+			}
+
+			currentButton = Mathf.Clamp(currentButton,0,maxOptions);
+		}
 	}
 
 	bool playerInDialogueWithEnvironment()
 	{
 		string keyPressed = Input.inputString;
 		Cell cell = dialogueTarget.GetComponent<Cell> ();
-		DialogueCanvas.enabled = true;
-		DialogueCanvas.GetComponentInChildren<Text> ().text = cell.dialogue [currentDialogueIndex];
+		dialoguePanel.SetActive (false);
+		dialoguePanel.GetComponentInChildren<Text> ().text = cell.dialogue [currentDialogueIndex];
 
 		if (keyPressed.Length == 0) 
 		{
@@ -250,7 +374,7 @@ public class RunOverworld : MonoBehaviour
 			}
 			else
 			{
-				DialogueCanvas.enabled = false;
+				dialoguePanel.SetActive(false);
 				return true;
 			}
 		}

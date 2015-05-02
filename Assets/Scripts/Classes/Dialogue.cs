@@ -6,12 +6,13 @@ public class Dialogue : MonoBehaviour
 {
 	public int id;
 
-	public string dialogueStepText;
+	public string text;
 
-	public bool dialogueStepHasOptions;
-	public List<string> dialogueOptions = new List<string>();
+	public bool hasOptions;
+	public List<string> options = new List<string>();
+	public List<int> optionDests = new List<int>();
 
-	public bool dialogueStepHasActions;
-	public List<string> dialogueActions = new List<string>();
+	public bool hasActions;
+	public List<string> actions = new List<string>();
 
 }
