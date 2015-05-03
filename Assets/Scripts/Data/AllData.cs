@@ -238,6 +238,8 @@ public class AllData : MonoBehaviour
 			runOverworld.ItemDesc = GameObject.Find ("ItemDesc");
 			runOverworld.InventoryCanvas = GameObject.Find("InventoryCanvas");
 			runOverworld.InventoryList = GameObject.Find("InventoryList");
+			runOverworld.InventoryListButtons = GameObject.Find ("InventoryListButtons");
+			runOverworld.InventoryListButton = GameObject.Find ("InventoryListButton");
 			runOverworld.InventoryCanvas.SetActive (false);
 			runOverworld.eventSystem = GameObject.Find ("EventSystem").GetComponent<EventSystem>();
 

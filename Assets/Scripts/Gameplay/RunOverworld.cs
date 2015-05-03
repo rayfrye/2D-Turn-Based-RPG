@@ -21,6 +21,7 @@ public class RunOverworld : MonoBehaviour
 	public GameObject InventoryCanvas;
 	public GameObject InventoryList;
 	public GameObject InventoryListButtons;
+	public GameObject InventoryListButton;
 	public GameObject ItemCount;
 	public GameObject ItemName;
 	public GameObject ItemDesc;
@@ -269,6 +270,10 @@ public class RunOverworld : MonoBehaviour
 				newItemDesc.name = "ItemName"+i;
 				newItemDesc.transform.parent = InventoryList.transform;
 
+				GameObject newItemButton = Instantiate(InventoryListButtons);
+				newItemButton.name = "InventoryListButton"+i;
+				newItemButton.transform.parent = InventoryListButtons.transform;
+
 				newItemCount.GetComponentInChildren<Text>().text = tempItemIDs[i].ToString ();
 				newItemName.GetComponentInChildren<Text>().text = allData.items[tempItemIDs.Keys.ToList ()[i]].itemName;
 				newItemDesc.GetComponentInChildren<Text>().text = allData.items[tempItemIDs.Keys.ToList ()[i]].desc;
@@ -276,6 +281,7 @@ public class RunOverworld : MonoBehaviour
 				temporaryGameObjects.Add (newItemCount);
 				temporaryGameObjects.Add (newItemName);
 				temporaryGameObjects.Add (newItemDesc);
+				temporaryGameObjects.Add (newItemButton);
 			}
 		}
 
@@ -298,6 +304,9 @@ public class RunOverworld : MonoBehaviour
 		}
 		else
 		{
+
+			eventSystem.SetSelectedGameObject(dialogueOptionButtons[currentButton]);
+			handleInput(allData.dialogues[currentDialogueIndex].options.Count - 1);
 			return false;
 		}
 	}
