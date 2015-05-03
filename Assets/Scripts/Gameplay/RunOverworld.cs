@@ -18,7 +18,15 @@ public class RunOverworld : MonoBehaviour
 	public GameObject dialoguePanel;
 	public GameObject dialogueOptionPanel;
 	public List<GameObject> dialogueOptionButtons = new List<GameObject>();
+	public GameObject InventoryCanvas;
+	public GameObject InventoryList;
+	public GameObject InventoryListButtons;
+	public GameObject ItemCount;
+	public GameObject ItemName;
+	public GameObject ItemDesc;
 	public EventSystem eventSystem;
+
+	List<GameObject> temporaryGameObjects = new List<GameObject>();
 
 	public int currentButton = 0;
 
@@ -31,6 +39,7 @@ public class RunOverworld : MonoBehaviour
 		,SetupDialogueWithNPC
 		,DialogueWithEnvironment
 		,Shopping
+		,SetupInventory
 		,Inventory
 		,GoingThroughDoor
 		,DoDialogueWithNPC
@@ -50,7 +59,7 @@ public class RunOverworld : MonoBehaviour
 		{
 		case OverworldState.Idle:
 		{
-			movementInput ();
+			handleInput ();
 			break;
 		}
 		case OverworldState.Moving:
@@ -87,6 +96,19 @@ public class RunOverworld : MonoBehaviour
 			}
 			break;
 		}
+		case OverworldState.SetupInventory:
+		{
+			setupInventory();
+			break;
+		}
+		case OverworldState.Inventory:
+		{
+			if(playerInInventory())
+			{
+				currentState = OverworldState.Idle;
+			}
+			break;
+		}
 		default:
 		{
 			break;
@@ -94,7 +116,7 @@ public class RunOverworld : MonoBehaviour
 		}
 	}
 
-	void movementInput()
+	void handleInput()
 	{
 		string keyPressed = Input.inputString;
 		
@@ -166,6 +188,11 @@ public class RunOverworld : MonoBehaviour
 				}
 				break;
 			}
+			case "t":
+			{
+				currentState = OverworldState.SetupInventory;
+				break;
+			}
 			default:
 			{
 				break;
@@ -211,6 +238,67 @@ public class RunOverworld : MonoBehaviour
 					}
 				}
 			}
+		}
+	}
+
+	void setupInventory()
+	{
+		InventoryCanvas.SetActive(true);
+
+		Dictionary<int,int> tempItemIDs = allData.playerData.itemIDs;
+
+		for(int i = 0; i < tempItemIDs.Keys.Count; i++)
+		{
+			if(i == 0)
+			{
+				ItemCount.GetComponentInChildren<Text>().text = tempItemIDs[i].ToString ();
+				ItemName.GetComponentInChildren<Text>().text = allData.items[tempItemIDs.Keys.ToList ()[i]].itemName;
+				ItemDesc.GetComponentInChildren<Text>().text = allData.items[tempItemIDs.Keys.ToList ()[i]].desc;
+			}
+			else
+			{
+				GameObject newItemCount = Instantiate(ItemCount);
+				newItemCount.name = "ItemCount"+i;
+				newItemCount.transform.parent = InventoryList.transform;
+
+				GameObject newItemName = Instantiate(ItemName);
+				newItemName.name = "ItemName"+i;
+				newItemName.transform.parent = InventoryList.transform;
+
+				GameObject newItemDesc = Instantiate(ItemDesc);
+				newItemDesc.name = "ItemName"+i;
+				newItemDesc.transform.parent = InventoryList.transform;
+
+				newItemCount.GetComponentInChildren<Text>().text = tempItemIDs[i].ToString ();
+				newItemName.GetComponentInChildren<Text>().text = allData.items[tempItemIDs.Keys.ToList ()[i]].itemName;
+				newItemDesc.GetComponentInChildren<Text>().text = allData.items[tempItemIDs.Keys.ToList ()[i]].desc;
+
+				temporaryGameObjects.Add (newItemCount);
+				temporaryGameObjects.Add (newItemName);
+				temporaryGameObjects.Add (newItemDesc);
+			}
+		}
+
+		currentState = OverworldState.Inventory;
+	}
+
+	bool playerInInventory()
+	{
+		string keyPressed = Input.inputString;
+		
+		if (keyPressed == "t") 
+		{
+			foreach(GameObject temporaryGameObject in temporaryGameObjects)
+			{
+				Destroy(temporaryGameObject);
+			}
+
+			InventoryCanvas.SetActive(false);
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 

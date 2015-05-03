@@ -30,6 +30,9 @@ public class AllData : MonoBehaviour
 	public PermanentData permanentData;
 	public CreateDialogue createDialogue;
 	public CreateQuest createQuest;
+	public CreatePlayerData createPlayerData;
+	public CreateItems createItems;
+
 
 	public Font arial;
 
@@ -41,6 +44,8 @@ public class AllData : MonoBehaviour
 	public GameObject dialogueFolder;
 	public GameObject questFolder;
 	public GameObject canvas;
+	public GameObject playerDataFolder;
+	public GameObject itemFolder;
 	#endregion DataFolders
 
 	#region colors
@@ -59,6 +64,8 @@ public class AllData : MonoBehaviour
 	public List<Dialogue> dialogues = new List<Dialogue> ();
 	public List<Quest> quests = new List<Quest>();
 	public GameObject[,] cells = new GameObject[0,0];
+	public PlayerData playerData;
+	public List<Item> items = new List<Item>();
 	
 	public enum gameState
 	{
@@ -120,6 +127,14 @@ public class AllData : MonoBehaviour
 		questFolder = new GameObject ();
 		questFolder.name = "Quest Folder";
 		questFolder.transform.parent = transform;
+
+		playerDataFolder = new GameObject();
+		playerDataFolder.name = "Player Data Folder";
+		playerDataFolder.transform.parent = transform;
+
+		itemFolder = new GameObject();
+		itemFolder.name = "Item Folder";
+		itemFolder.transform.parent = transform;
 	}
 
 	public void getComponents()
@@ -155,6 +170,12 @@ public class AllData : MonoBehaviour
 
 		createQuest = gameObject.AddComponent<CreateQuest> ();
 		createQuest.GetComponent<CreateQuest> ().allData = this;
+
+		createPlayerData = gameObject.AddComponent<CreatePlayerData>();
+		createPlayerData.GetComponent<CreatePlayerData>().allData = this;
+
+		createItems = gameObject.AddComponent<CreateItems>();
+		createItems.GetComponent<CreateItems>().allData = this;
 	}
 
 	public void loadData()
@@ -163,6 +184,8 @@ public class AllData : MonoBehaviour
 		{
 		case gameState.Battle:
 		{
+			loadPlayerData();
+			loadItems();
 			loadClasses();
 			loadCharacters();
 			loadCells(currentLevel);
@@ -183,6 +206,8 @@ public class AllData : MonoBehaviour
 		}
 		case gameState.Overworld:
 		{
+			loadPlayerData();
+			loadItems();
 			loadClasses();
 			loadDialogue();
 			loadQuests();
@@ -207,6 +232,13 @@ public class AllData : MonoBehaviour
 			runOverworld.dialogueOptionButtons[2].SetActive (false);
 			runOverworld.dialogueOptionPanel = GameObject.Find ("DialogueOptionPanel");
 			runOverworld.dialogueOptionPanel.SetActive (false);
+
+			runOverworld.ItemCount = GameObject.Find ("ItemCount");
+			runOverworld.ItemName = GameObject.Find ("ItemName");
+			runOverworld.ItemDesc = GameObject.Find ("ItemDesc");
+			runOverworld.InventoryCanvas = GameObject.Find("InventoryCanvas");
+			runOverworld.InventoryList = GameObject.Find("InventoryList");
+			runOverworld.InventoryCanvas.SetActive (false);
 			runOverworld.eventSystem = GameObject.Find ("EventSystem").GetComponent<EventSystem>();
 
 			finishedLoading = true;
@@ -217,6 +249,43 @@ public class AllData : MonoBehaviour
 			break;
 		}
 		}
+	}
+
+	public void loadItems()
+	{
+		createItems.createItems
+		(
+			itemFolder
+			,0
+			,"Potion"
+			,"Heals 10 HP"
+		);
+
+		createItems.createItems
+		(
+			itemFolder
+			,1
+			,"Armlet"
+			,"Prevents 10 points of damage"
+		);
+	}
+
+	public void loadPlayerData()
+	{
+		List<int> partyCharacterIDs = new List<int>();
+		partyCharacterIDs.Add(0);
+
+		Dictionary<int,int> inventoryItemIDs = new Dictionary<int,int>();
+		inventoryItemIDs.Add (0,1);
+		inventoryItemIDs.Add (1,1);
+
+		createPlayerData.createPlayerData
+		(
+			playerDataFolder
+			,100
+			,partyCharacterIDs
+			,inventoryItemIDs
+		);
 	}
 
 	public void loadQuests()
