@@ -391,25 +391,13 @@ public class AllData : MonoBehaviour
 		createCharacterClass.createCharacterClass
 		(
 			characterClassFolder
-			,"Infantry"
+			,"Squire"
 			,0
 			,3
 			,2
 			,2
 			,10
 			,1
-		);
-		
-		createCharacterClass.createCharacterClass
-		(
-			characterClassFolder
-			,"Archer"
-			,0
-			,3
-			,5
-			,1
-			,10
-			,3
 		);
 	}
 
@@ -447,7 +435,7 @@ public class AllData : MonoBehaviour
 			characterFolder
 			,"George"
 			,1
-			,characterClasses[1]
+			,characterClasses[0]
 			,dialogueIDs
 			,questIDPrereqs
 		);
@@ -457,7 +445,7 @@ public class AllData : MonoBehaviour
 			characterFolder
 			,"Ephram"
 			,2
-			,characterClasses[1]
+			,characterClasses[0]
 			,dialogueIDs
 			,questIDPrereqs
 		);

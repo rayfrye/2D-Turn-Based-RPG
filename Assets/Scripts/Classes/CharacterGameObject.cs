@@ -17,11 +17,13 @@ public class CharacterGameObject : MonoBehaviour
 
 	public string currentBody;
 	public string currentHat;
+	public string currentHair;
 	public string currentPants;
 	public string currentShirt;
 
 	public Animator bodyAnimator;
 	public Animator hatAnimator;
+	public Animator hairAnimator;
 	public Animator pantsAnimator;
 	public Animator shirtAnimator;
 
@@ -80,7 +82,8 @@ public class CharacterGameObject : MonoBehaviour
 
 	public void currentAnimation(string animationType)
 	{
-		bodyAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + race + "_" + currentBody + "_" + animationType + "_" + currentDirString());
+		print (character.characterClass.charClassName + "_" + currentBody + "_" + animationType + "_" + currentDirString ());
+		bodyAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + character.characterClass.charClassName + "_" + currentBody + "_" + animationType + "_" + currentDirString());
 		hatAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + race + "_" + currentHat + "_" + animationType + "_" + currentDirString());
 
 

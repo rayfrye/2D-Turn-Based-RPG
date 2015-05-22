@@ -29,7 +29,7 @@ public class CreateCharacterGameObject : MonoBehaviour
 		newCharacterGameObject.tag = tag;
 
 		setupTransform (newCharacterGameObject.transform, pos, new Vector3 (1, 1, 1));
-		setupSpriteRenderer (newCharacterGameObject, "Sprites/human_body", 5);
+		setupSpriteRenderer (newCharacterGameObject, "Sprites/" + character.characterClass.charClassName + "_body", 5);
 		setupMoveCharacter (newCharacterGameObject, cal, character);
 		setupCharacter (newCharacterGameObject, character, allData, enemyFaction, pos, isPlayer, row, col, dialogue);
 		setupAnimation (newCharacterGameObject, newCharacterGameObject, "body");
