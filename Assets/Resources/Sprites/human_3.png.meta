@@ -1,12 +1,13 @@
 fileFormatVersion: 2
 guid: 80f4e87c68701384aba5daae16c84b6e
-timeCreated: 1432003350
+timeCreated: 1432125215
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: human_3_0
     21300002: human_3_1
     21300004: human_3_2
+    21300006: human_3_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -76,6 +77,16 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
+        y: 216
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: human_3_3
+      rect:
+        serializedVersion: 2
+        x: 72
         y: 216
         width: 24
         height: 24
