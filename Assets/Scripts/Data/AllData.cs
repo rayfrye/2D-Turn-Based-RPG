@@ -32,11 +32,16 @@ public class AllData : MonoBehaviour
 	public CreateQuest createQuest;
 	public CreatePlayerData createPlayerData;
 	public CreateItems createItems;
+	public ConvertData convertData;
+	public SaveData saveData;
+	public CreateTurnBasedBattle createTurnBasedBattle;
+	public RunTurnBasedBattle runTurnBasedBattle;
 
 
 	public Font arial;
 
 	#region DataFolders
+	public GameObject gameDataFolder;
 	public GameObject characterClassFolder;
 	public GameObject characterFolder;
 	public GameObject characterGameObjectFolder;
@@ -71,6 +76,7 @@ public class AllData : MonoBehaviour
 	{
 		Battle
 		,Overworld
+		,Turn_Based_Battle
 	}
 
 	public gameState currentState;
@@ -80,7 +86,7 @@ public class AllData : MonoBehaviour
 	{
 		createPermanentData ();
 
-		currentState = gameState.Overworld;
+		currentState = gameState.Turn_Based_Battle;
 
 		getComponents();
 		createFolders();
@@ -97,7 +103,7 @@ public class AllData : MonoBehaviour
 			newPermanentData.name = "PermanentData";
 			PermanentData permanentDataScript = newPermanentData.AddComponent<PermanentData>();
 			permanentDataScript.currentDoorNum = 0;
-			permanentDataScript.currentLevel = "Test Level";
+			permanentDataScript.currentLevel = "Wood Floor Arena";
 			permanentDataScript.playerCharacterID = 0;
 		}
 	}
@@ -106,11 +112,11 @@ public class AllData : MonoBehaviour
 	{
 		characterClassFolder = new GameObject();
 		characterClassFolder.name = "Character Class Folder";
-		characterClassFolder.transform.parent = transform;
+		characterClassFolder.transform.parent = gameDataFolder.transform;
 
 		characterFolder = new GameObject();
 		characterFolder.name = "Character Folder";
-		characterFolder.transform.parent = transform;
+		characterFolder.transform.parent = gameDataFolder.transform;
 
 		characterGameObjectFolder = new GameObject();
 		characterGameObjectFolder.name = "Character GameObject Folder";
@@ -122,19 +128,19 @@ public class AllData : MonoBehaviour
 
 		dialogueFolder = new GameObject ();
 		dialogueFolder.name = "Dialogue Folder";
-		dialogueFolder.transform.parent = transform;
+		dialogueFolder.transform.parent = gameDataFolder.transform;
 
 		questFolder = new GameObject ();
 		questFolder.name = "Quest Folder";
-		questFolder.transform.parent = transform;
+		questFolder.transform.parent = gameDataFolder.transform;
 
 		playerDataFolder = new GameObject();
 		playerDataFolder.name = "Player Data Folder";
-		playerDataFolder.transform.parent = transform;
+		playerDataFolder.transform.parent = gameDataFolder.transform;
 
 		itemFolder = new GameObject();
 		itemFolder.name = "Item Folder";
-		itemFolder.transform.parent = transform;
+		itemFolder.transform.parent = gameDataFolder.transform;
 	}
 
 	public void getComponents()
@@ -143,6 +149,15 @@ public class AllData : MonoBehaviour
 		currentLevel = permanentData.currentLevel;
 		currentDoorNum = permanentData.currentDoorNum;
 		playerCharacterID = permanentData.playerCharacterID;
+
+		gameDataFolder = GameObject.Find ("GameDataFolder");
+
+		convertData = gameObject.AddComponent<ConvertData>();
+		saveData = gameObject.AddComponent<SaveData>();
+
+		createTurnBasedBattle = gameObject.AddComponent<CreateTurnBasedBattle>();
+
+		runTurnBasedBattle = gameObject.AddComponent<RunTurnBasedBattle>();
 		
 		cal = GameObject.Find("GameData").GetComponent<Calendar>();
 		canvas = GameObject.Find ("Canvas");
@@ -184,10 +199,7 @@ public class AllData : MonoBehaviour
 		{
 		case gameState.Battle:
 		{
-			loadPlayerData();
-			loadItems();
-			loadClasses();
-			loadCharacters();
+			loadGameData();
 			loadCells(currentLevel);
 			loadCharacterGameObjects_Manual();
 
@@ -195,23 +207,18 @@ public class AllData : MonoBehaviour
 			createBattle.allData = this;
 			createBattle.numOfDiceSides = 10000;
 			createBattle.pathfinder = pathfinder;
+			loadBattle();
 
 			runBattle = gameObject.AddComponent<RunBattle>();
 			runBattle.allData = this;
 			runBattle.cal = cal;
 			runBattle.pathfinder = pathfinder;
 			runBattle.currentBattleState = RunBattle.battleStateType.GetTarget;
-
 			break;
 		}
 		case gameState.Overworld:
 		{
-			loadPlayerData();
-			loadItems();
-			loadClasses();
-			loadDialogue();
-			loadQuests();
-			loadCharacters();
+			loadGameData();
 			loadCells(currentLevel);
 
 			runOverworld = gameObject.AddComponent<RunOverworld> ();
@@ -246,6 +253,19 @@ public class AllData : MonoBehaviour
 			finishedLoading = true;
 			break;
 		}
+		case gameState.Turn_Based_Battle:
+		{
+			loadGameData();
+
+			loadCells("Wood Floor Arena");
+			loadTurnBasedBattle();
+			GameObject.Find ("DialogueOptionPanel").SetActive (false);
+			GameObject.Find("InventoryCanvas").SetActive (false);
+
+			loadCharacterGameObjectsForTurnBasedBattle();
+
+			break;
+		}
 		default:
 		{
 			break;
@@ -253,23 +273,44 @@ public class AllData : MonoBehaviour
 		}
 	}
 
+	public void loadTurnBasedBattle()
+	{
+		createTurnBasedBattle.createTurnBasedBattle
+		(
+			this
+			,GameObject.Find ("Cell_4_6").transform
+		);
+	}
+
+	public void loadGameData()
+	{
+//		if(!permanentData.alreadyLoadedData)
+//		{
+			loadPlayerData();
+			loadItems();
+			loadClasses();
+			loadDialogue();
+			loadQuests();
+			loadCharacters();
+
+//			permanentData.alreadyLoadedData = true;
+//		}
+	}
+
 	public void loadItems()
 	{
-		createItems.createItems
-		(
-			itemFolder
-			,0
-			,"Potion"
-			,"Heals 10 HP"
-		);
-
-		createItems.createItems
-		(
-			itemFolder
-			,1
-			,"Armlet"
-			,"Prevents 10 points of damage"
-		);
+		string[,] tempItems = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/GameData/items.csv");
+		
+		for(int row = 0; row < tempItems.GetLength (0); row ++)
+		{
+			createItems.createItems
+			(
+				itemFolder
+				,int.Parse (tempItems[row,0])
+				,tempItems[row,1]
+				,tempItems[row,2]
+			);
+		}
 	}
 
 	public void loadPlayerData()
@@ -292,86 +333,39 @@ public class AllData : MonoBehaviour
 
 	public void loadQuests()
 	{
-		createQuest.createQuest
-		(
-			questFolder
-			,0
-			,"Starting Out"
-			,"Default starting quest"
-			,true
-		);
-
-		createQuest.createQuest
-		(
-			questFolder
-			,1
-			,"testng first quest"
-			,"Testing"
-			,false
-		);
+		string[,] tempQuests = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/GameData/quests.csv");
+		
+		for(int row = 0; row < tempQuests.GetLength (0); row ++)
+		{
+			createQuest.createQuest
+			(
+				questFolder
+				,convertData.convertStringToInt(tempQuests[row,0])
+				,tempQuests[row,1]
+				,tempQuests[row,2]
+				,convertData.convertStringToBool(tempQuests[row,3])
+			);
+		}
 	}
 
 	public void loadDialogue()
 	{
-		List<string> tempOptions = new List<string>();
-		tempOptions.Add ("I'm not");
-		tempOptions.Add ("Me too");
+		string[,] tempDialogues = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/GameData/dialogue.csv");
 
-		List<int> tempOptionDestinations = new List<int>();
-		tempOptionDestinations.Add (1);
-		tempOptionDestinations.Add (2);
-
-		List<string> tempActions = new List<string>();
-		tempActions.Add("questCompleted:1");
-
-		createDialogue.createDialogue
-		(
-			dialogueFolder
-			,0
-			,"I'm an NPC."
-			,false
-			,new List<string>()
-			,true
-			,tempOptions
-			,tempOptionDestinations
-		);
-
-		createDialogue.createDialogue
-		(
-			dialogueFolder
-			,1
-			,"Weird"
-			,false
-			,new List<string>()
-			,false
-			,new List<string>()
-			,new List<int>()
-		);
-
-		createDialogue.createDialogue
-		(
-			dialogueFolder
-			,2
-			,"Cool"
-			,true
-			,tempActions
-			,false
-			,new List<string>()
-			,new List<int>()
-		);
-
-		createDialogue.createDialogue
-		(
-			dialogueFolder
-			,3
-			,"Good job doing that thing."
-			,false
-			,new List<string>()
-			,false
-			,new List<string>()
-			,new List<int>()
-		);
-
+		for(int row = 0; row < tempDialogues.GetLength (0); row ++)
+		{
+			createDialogue.createDialogue
+			(
+				dialogueFolder
+				,int.Parse (tempDialogues[row,0])
+				,tempDialogues[row,1]
+				,convertData.convertStringToBool(tempDialogues[row,2])
+				,convertData.convertStringtoListString(tempDialogues[row,6])
+				,convertData.convertStringToBool(tempDialogues[row,3])
+				,convertData.convertStringtoListString(tempDialogues[row,4])
+				,convertData.convertStringtoListInt(tempDialogues[row,5])
+			);
+		}
 	}
 
 	public void loadClasses()
@@ -387,18 +381,22 @@ public class AllData : MonoBehaviour
 		 * int attackRange
 		 */
 
-		Debug.Log ("Creating Character Classes manually - at some point will load this information from spreadsheet and loop over it.");
-		createCharacterClass.createCharacterClass
-		(
-			characterClassFolder
-			,"Squire"
-			,0
-			,3
-			,2
-			,2
-			,10
-			,1
-		);
+		string[,] tempCharacterClasses = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/GameData/character_classes.csv");
+		
+		for(int row = 0; row < tempCharacterClasses.GetLength (0); row ++)
+		{
+			createCharacterClass.createCharacterClass
+			(
+				characterClassFolder
+				,tempCharacterClasses[row,1]
+				,int.Parse (tempCharacterClasses[row,0])
+				,int.Parse (tempCharacterClasses[row,2])
+				,int.Parse (tempCharacterClasses[row,3])
+				,int.Parse (tempCharacterClasses[row,4])
+				,int.Parse (tempCharacterClasses[row,5])
+				,int.Parse (tempCharacterClasses[row,6])
+			);
+		}
 	}
 
 	public void loadCharacters()
@@ -410,45 +408,74 @@ public class AllData : MonoBehaviour
 		 * CharacterClass characterClass
 		 */
 
-		List<int> dialogueIDs = new List<int>();
-		dialogueIDs.Add (0);
-		dialogueIDs.Add (3);
-
-		List<int> questIDPrereqs = new List<int>();
-		questIDPrereqs.Add (0);
-		questIDPrereqs.Add (1);
-
-		Debug.Log ("Creating Characters manually - at some point will create randomly.");
-
-		createCharacter.createCharacter
-		(
-			characterFolder
-			,"John"
-			,0
-			,characterClasses[0]
-			,dialogueIDs
-			,questIDPrereqs
-		);
+		string[,] tempCharacters = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/GameData/characters.csv");
 		
-		createCharacter.createCharacter
-		(
-			characterFolder
-			,"George"
-			,1
-			,characterClasses[0]
-			,dialogueIDs
-			,questIDPrereqs
-		);
+		for(int row = 0; row < tempCharacters.GetLength (0); row ++)
+		{
+			createCharacter.createCharacter
+			(
+				characterFolder
+				,tempCharacters[row,1]
+				,int.Parse (tempCharacters[row,0])
+				,characterClasses[int.Parse (tempCharacters[row,2])]
+				,convertData.convertStringtoListInt(tempCharacters[row,3])
+				,convertData.convertStringtoListInt(tempCharacters[row,4])
+			);
+		}
+	}
 
-		createCharacter.createCharacter
+	public void loadCharacterGameObjectsForTurnBasedBattle()
+	{
+		foreach(int playerCharacterID in playerData.partyCharacterIDs)
+		{
+			runTurnBasedBattle.playerParty.Add 
+			(
+				createCharacterGameObject.createCharacterGameObject
+				(
+					cal
+					,characterGameObjectFolder
+					,cells[1,2].transform.position
+					,characters[playerCharacterID]
+					,"NPC"
+					,"Friendly"
+					,"Enemy"
+					,false
+					,2
+					,2
+					,new List<string>()
+				)
+			);
+		}
+		
+		createCharacterGameObject.createCharacterGameObject
 		(
-			characterFolder
-			,"Ephram"
-			,2
-			,characterClasses[0]
-			,dialogueIDs
-			,questIDPrereqs
+			cal
+			,characterGameObjectFolder
+			,cells[1,9].transform.position
+			,characters[1]
+			,"NPC"
+			,"Enemy"
+			,"Friendly"
+			,false
+			,1
+			,9
+			,new List<string>()
 		);
+//		
+//		createCharacterGameObject.createCharacterGameObject
+//		(
+//			cal
+//			,characterGameObjectFolder
+//			,cells[3,3].transform.position
+//			,characters[2]
+//			,"NPC"
+//			,"Faction - Side 2"
+//			,"Faction - Side 1"
+//			,false
+//			,3
+//			,3
+//			,new List<string>()
+//		);
 	}
 
 	public void loadCharacterGameObjects_Manual()

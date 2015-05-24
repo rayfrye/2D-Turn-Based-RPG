@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 61cd1714a58537c4fa109687bdc7855d
-timeCreated: 1432259858
+timeCreated: 1432390740
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -12,6 +12,14 @@ TextureImporter:
     21300010: Squire_body_5
     21300012: Squire_body_6
     21300014: Squire_body_7
+    21300016: Squire_body_8
+    21300018: Squire_body_9
+    21300020: Squire_body_10
+    21300022: Squire_body_11
+    21300024: Squire_body_12
+    21300026: Squire_body_13
+    21300028: Squire_body_14
+    21300030: Squire_body_15
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -132,6 +140,86 @@ TextureImporter:
         serializedVersion: 2
         x: 168
         y: 216
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_body_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_body_9
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_body_10
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_body_11
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_body_12
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_body_13
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_body_14
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_body_15
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 192
         width: 24
         height: 24
       alignment: 0

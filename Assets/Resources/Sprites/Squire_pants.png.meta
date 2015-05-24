@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: ad326aec523981748b38a67da2418743
-timeCreated: 1432259868
+timeCreated: 1432391694
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -12,6 +12,14 @@ TextureImporter:
     21300010: Squire_pants_5
     21300012: Squire_pants_6
     21300014: Squire_pants_7
+    21300016: Squire_pants_8
+    21300018: Squire_pants_9
+    21300020: Squire_pants_10
+    21300022: Squire_pants_11
+    21300024: Squire_pants_12
+    21300026: Squire_pants_13
+    21300028: Squire_pants_14
+    21300030: Squire_pants_15
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -132,6 +140,86 @@ TextureImporter:
         serializedVersion: 2
         x: 168
         y: 216
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_pants_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_pants_9
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_pants_10
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_pants_11
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_pants_12
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_pants_13
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_pants_14
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_pants_15
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 192
         width: 24
         height: 24
       alignment: 0

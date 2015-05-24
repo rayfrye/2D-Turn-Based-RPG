@@ -247,7 +247,7 @@ public class CreateCells : MonoBehaviour
 		spriteRenderer.sprite = Resources.LoadAll<Sprite> (imageFile)[imageLayerIndex];
 		spriteRenderer.sortingOrder = sortingOrder;
 
-		setupTextRectTransform (imageGameObject, 50, 1);
+		setupTextRectTransform (imageGameObject, 1, 1);
 	}
 
 	public void setupButton

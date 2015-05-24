@@ -82,9 +82,12 @@ public class CharacterGameObject : MonoBehaviour
 
 	public void currentAnimation(string animationType)
 	{
-		print (character.characterClass.charClassName + "_" + currentBody + "_" + animationType + "_" + currentDirString ());
-		bodyAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + character.characterClass.charClassName + "_" + currentBody + "_" + animationType + "_" + currentDirString());
-		hatAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + race + "_" + currentHat + "_" + animationType + "_" + currentDirString());
+		print ("Animations/" + character.characterClass.charClassName + "_" + currentBody + "_" + animationType + "_" + currentDirString());
+		bodyAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + currentBody + "_" + animationType + "_" + currentDirString());
+		hatAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + currentHat + "_" + animationType + "_" + currentDirString());
+		hairAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + currentHair + "_" + animationType + "_" + currentDirString());
+		shirtAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + currentShirt + "_" + animationType + "_" + currentDirString());
+		pantsAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + currentPants + "_" + animationType + "_" + currentDirString());
 
 
 	}

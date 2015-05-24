@@ -5,6 +5,7 @@ public class PermanentData : MonoBehaviour
 {
 	public string currentLevel;
 	public int currentDoorNum ;
+	public bool alreadyLoadedData;
 	
 	public int playerCharacterID;
 
@@ -12,5 +13,6 @@ public class PermanentData : MonoBehaviour
 	void Start () 
 	{
 		DontDestroyOnLoad (this);
+		alreadyLoadedData = false;
 	}
 }

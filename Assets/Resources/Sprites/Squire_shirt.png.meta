@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 0f4812777a5bee548aff886b67ffe21d
-timeCreated: 1432259886
+timeCreated: 1432391709
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -12,6 +12,14 @@ TextureImporter:
     21300010: Squire_shirt_5
     21300012: Squire_shirt_6
     21300014: Squire_shirt_7
+    21300016: Squire_shirt_8
+    21300018: Squire_shirt_9
+    21300020: Squire_shirt_10
+    21300022: Squire_shirt_11
+    21300024: Squire_shirt_12
+    21300026: Squire_shirt_13
+    21300028: Squire_shirt_14
+    21300030: Squire_shirt_15
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -132,6 +140,86 @@ TextureImporter:
         serializedVersion: 2
         x: 168
         y: 216
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_shirt_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_shirt_9
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_shirt_10
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_shirt_11
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_shirt_12
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_shirt_13
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_shirt_14
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 192
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Squire_shirt_15
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 192
         width: 24
         height: 24
       alignment: 0

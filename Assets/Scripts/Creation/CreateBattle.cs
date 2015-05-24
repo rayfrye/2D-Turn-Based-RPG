@@ -17,6 +17,7 @@ public class CreateBattle : MonoBehaviour
 		List<GameObject> characterGameObjects
 	)
 	{
+
 		foreach(GameObject characterGameObject in characterGameObjects)
 		{
 			int diceRoll = Random.Range (0,numOfDiceSides) + (int) (characterGameObject.GetComponent<CharacterGameObject>().character.moveSpeed()*100);

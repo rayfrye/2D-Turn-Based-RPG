@@ -29,15 +29,15 @@ public class ReadCSV : MonoBehaviour
 	)
 	{
 		string[] dataRaw = File.ReadAllLines (path);
-		
+
 		string[] dataSingleDim = new string[dataRaw.Length-1];
-		
+
 		for (int row = 1; row < dataRaw.Length; row++) 
 		{
 			dataSingleDim[row-1] = dataRaw[row];
 		}
-
-		int noOfCols = dataSingleDim[0].Count(f => f == ',');
+		
+		int noOfCols = dataSingleDim[0].Count(f => f == ',') + 1;
 
 		string[,] data = new string[dataSingleDim.Length,noOfCols];
 

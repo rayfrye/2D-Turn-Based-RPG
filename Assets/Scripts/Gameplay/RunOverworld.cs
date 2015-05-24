@@ -555,6 +555,8 @@ public class RunOverworld : MonoBehaviour
 				permanentData.currentLevel = destCell.doorLevel;
 				permanentData.currentDoorNum = destCell.doorNum;
 
+				allData.saveData.saveData(allData.quests);
+
 				currentState = OverworldState.GoingThroughDoor;
 
 				return false;

@@ -32,9 +32,7 @@ public class Character : MonoBehaviour
 				i = questIDPrereqs.Count;
 			}
 		}
-
-		print (currentIndex);
-
+		
 		return currentIndex;
 	}
 
