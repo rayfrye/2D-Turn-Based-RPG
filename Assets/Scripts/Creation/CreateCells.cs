@@ -97,6 +97,14 @@ public class CreateCells : MonoBehaviour
 	{
 		Cell cell = newCell.GetComponent<Cell> ();
 
+		if (cellValue.Contains ("destx")) 
+		{
+			cell.isDoor = true;
+			cell.doorLevel = readCellData.getCellValue(cellValue,"doorLevel");
+			cell.destx = int.Parse (readCellData.getCellValue(cellValue,"destx"));
+			cell.desty = int.Parse (readCellData.getCellValue(cellValue,"desty"));
+		}
+
 		if (cellValue.Contains ("isDoor")) 
 		{
 			if(readCellData.getCellValue(cellValue,"isDoor") == "true")

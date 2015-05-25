@@ -13,6 +13,8 @@ public class Cell : MonoBehaviour
 	public bool isDoor;
 	public string doorLevel;
 	public int doorNum;
+	public int destx;
+	public int desty;
 
 	public bool isSpawnPoint;
 	public int spawnPointNum;
