@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CreateCharacterClass : MonoBehaviour 
 {
@@ -15,6 +16,7 @@ public class CreateCharacterClass : MonoBehaviour
 		,int defense
 		,int totalHealth
 		,int attackRange
+		,List<int> abilityIDs
 	)
 	{
 		CharacterClass newCharacterClass = folder.AddComponent<CharacterClass>();
@@ -26,6 +28,7 @@ public class CreateCharacterClass : MonoBehaviour
 		newCharacterClass.defense = defense;
 		newCharacterClass.totalHealth = totalHealth;
 		newCharacterClass.attackRange = attackRange;
+		newCharacterClass.abilityIDs = abilityIDs;
 
 		allData.characterClasses.Add (newCharacterClass);
 	}

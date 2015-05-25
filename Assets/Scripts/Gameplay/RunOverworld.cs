@@ -154,6 +154,13 @@ public class RunOverworld : MonoBehaviour
 				playerCharacterGameObject.currentDir = CharacterGameObject.dir.East;
 				break;
 			}
+			case "o":
+			{
+				permanentData.currentLevel = "Wood Floor Test";
+				allData.saveData.savePlayerData(allData.playerData,playerCharacterGameObject.row,playerCharacterGameObject.col,permanentData.currentLevel,"Turn_Based_Battle","Wood Floor Arena");
+				Application.LoadLevel("Battle");
+				break;
+			}
 			case "e":
 			{
 				switch(playerCharacterGameObject.currentDir)
@@ -539,11 +546,9 @@ public class RunOverworld : MonoBehaviour
 			{
 				currentCharacterTransform.position = Vector3.MoveTowards (currentCharacterTransform.position, currentCharacter.path [0].transform.position, maxDistanceDelta);
 				return false;
-			} 
+			}
 			else 
 			{
-				//currentCharacterTransform.position = currentCharacter.path [0].transform.position;
-				
 				GameObject.Find ("Cell_" + currentCharacter.row + "_" + currentCharacter.col).GetComponent<Cell> ().isWalkable = true;
 				destCell.isWalkable = false;
 				

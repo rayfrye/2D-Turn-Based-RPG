@@ -22,6 +22,11 @@ public class ConvertData : MonoBehaviour
 		return int.Parse (s);
 	}
 
+	public float convertStringtoFloat(string s)
+	{
+		return float.Parse (s);
+	}
+
 	public List<string> convertStringtoListString(string s)
 	{
 		List<string> list = new List<string>();

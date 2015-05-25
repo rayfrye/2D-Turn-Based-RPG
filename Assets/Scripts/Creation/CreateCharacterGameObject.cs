@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ public class CreateCharacterGameObject : MonoBehaviour
 		,int row
 		,int col
 		,List<string> dialogue
+		,bool isForBattle
 	)
 	{
 		GameObject newCharacterGameObject = new GameObject();
@@ -35,17 +37,38 @@ public class CreateCharacterGameObject : MonoBehaviour
 		setupEquipment(newCharacterGameObject);
 		CharacterGameObject characterGo = newCharacterGameObject.GetComponent<CharacterGameObject>();
 
+		if (isForBattle)
+		{
+			setupSpriteBattleButton (newCharacterGameObject, pos, "battle_sprite_bg", "tagetbutton", new Color32(255,255,255,255), 4);
+		}
+
 		setupSprite (newCharacterGameObject, pos, characterGo.currentBody, "body", new Color32(248,205,154,255), 5);
 		setupSprite (newCharacterGameObject, pos, characterGo.currentHair, "hair", new Color32(255,255,255,255), 6);
 		setupSprite (newCharacterGameObject, pos, characterGo.currentHat, "hat", new Color32(255,255,255,255), 7);
 		setupSprite (newCharacterGameObject, pos, characterGo.currentShirt, "shirt", new Color32(255,255,255,255), 6);
 		setupSprite (newCharacterGameObject, pos, characterGo.currentPants, "pants", new Color32(255,255,255,255), 6);
-		
+
 		GameObject.Find ("Cell_" + newCharacterGameObject.GetComponent<CharacterGameObject> ().row + "_" + newCharacterGameObject.GetComponent<CharacterGameObject> ().col).GetComponent<Cell> ().isWalkable = false;
 
 		allData.characterGameObjects.Add (newCharacterGameObject);
 
 		return newCharacterGameObject;
+	}
+
+	public void setupSpriteBattleButton(GameObject characterGameObject, Vector3 pos, string spriteName, string spriteType, Color32 spriteColor, int spriteLayerOrder)
+	{
+		GameObject go = new GameObject ();
+		go.name = spriteName;
+		
+		go.transform.parent = characterGameObject.transform;
+		
+		setupTransform (go.transform, pos, new Vector3(1,1,1));
+
+		RectTransform goRectTransform = go.AddComponent<RectTransform> ();
+		goRectTransform.sizeDelta = new Vector3 (1, 1, 1);
+
+		Image goImage = go.AddComponent<Image> ();
+		goImage.color = new Color32 (255, 255, 255, 0);
 	}
 
 	public void setupEquipment(GameObject go)
@@ -154,5 +177,4 @@ public class CreateCharacterGameObject : MonoBehaviour
 		characterGameObjectScript.currentDir = CharacterGameObject.dir.South;
 		characterGameObjectScript.dialogue = dialogue;
 	}
-
 }

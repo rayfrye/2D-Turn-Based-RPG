@@ -82,7 +82,6 @@ public class CharacterGameObject : MonoBehaviour
 
 	public void currentAnimation(string animationType)
 	{
-		print ("Animations/" + character.characterClass.charClassName + "_" + currentBody + "_" + animationType + "_" + currentDirString());
 		bodyAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + currentBody + "_" + animationType + "_" + currentDirString());
 		hatAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + currentHat + "_" + animationType + "_" + currentDirString());
 		hairAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/" + currentHair + "_" + animationType + "_" + currentDirString());

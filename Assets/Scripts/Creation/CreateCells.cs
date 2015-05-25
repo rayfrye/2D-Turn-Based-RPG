@@ -60,6 +60,8 @@ public class CreateCells : MonoBehaviour
 				setupDialogue (grid[row,col], readCellData, newCell);
 
 
+
+
 				setupTextGameObject(newCell,text, font);
 
 				allData.cells[row,col] = newCell;
@@ -140,30 +142,31 @@ public class CreateCells : MonoBehaviour
 		, int col
 	)
 	{
-		if (cellValue.Contains ("isSpawnPoint")) 
-		{
-			if (readCellData.getCellValue (cellValue, "isSpawnPoint") == "true" 
-				&& int.Parse (readCellData.getCellValue (cellValue, "spawnPointNum")) == allData.currentDoorNum
-			   ) 
-			{
-				allData.player = createCharacterGameObject.createCharacterGameObject
-				(
-					cal
-					, allData.characterGameObjectFolder
-					, pos
-					, allData.characters [allData.playerCharacterID]
-					, "Player"
-					, "Good"
-					, "Bad"
-					, true
-					, row
-					, col
-					,new List<string>()
-				);
-				
-				GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<SmoothCamera2D> ().target = allData.player.transform;
-			}
-		}
+//		if (cellValue.Contains ("isSpawnPoint")) 
+//		{
+//			if (readCellData.getCellValue (cellValue, "isSpawnPoint") == "true" 
+//				&& int.Parse (readCellData.getCellValue (cellValue, "spawnPointNum")) == allData.currentDoorNum
+//			   ) 
+//			{
+//				allData.player = createCharacterGameObject.createCharacterGameObject
+//				(
+//					cal
+//					, allData.characterGameObjectFolder
+//					, pos
+//					, allData.characters [allData.playerCharacterID]
+//					, "Player"
+//					, "Good"
+//					, "Bad"
+//					, true
+//					, row
+//					, col
+//					,new List<string>()
+//					,false
+//				);
+//				
+//				GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<SmoothCamera2D> ().target = allData.player.transform;
+//			}
+//		}
 
 		if (cellValue.Contains ("characterID"))
 		{
@@ -185,6 +188,7 @@ public class CreateCells : MonoBehaviour
 				,row
 				,col
 				,dialogue
+				,false
 			);
 
 			newCell.GetComponent<Cell>().hasNPC = true;
@@ -245,7 +249,7 @@ public class CreateCells : MonoBehaviour
 
 		SpriteRenderer spriteRenderer = imageGameObject.AddComponent<SpriteRenderer>();
 		spriteRenderer.sprite = Resources.LoadAll<Sprite> (imageFile)[imageLayerIndex];
-		spriteRenderer.sortingOrder = sortingOrder;
+		spriteRenderer.sortingOrder = sortingOrder-10;
 
 		setupTextRectTransform (imageGameObject, 1, 1);
 	}

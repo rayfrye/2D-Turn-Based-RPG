@@ -33,6 +33,7 @@ public class AllData : MonoBehaviour
 	public CreatePlayerData createPlayerData;
 	public CreateItems createItems;
 	public ConvertData convertData;
+	public CreateAbility createAbility;
 	public SaveData saveData;
 	public CreateTurnBasedBattle createTurnBasedBattle;
 	public RunTurnBasedBattle runTurnBasedBattle;
@@ -51,6 +52,7 @@ public class AllData : MonoBehaviour
 	public GameObject canvas;
 	public GameObject playerDataFolder;
 	public GameObject itemFolder;
+	public GameObject abilityFolder;
 	#endregion DataFolders
 
 	#region colors
@@ -71,6 +73,7 @@ public class AllData : MonoBehaviour
 	public GameObject[,] cells = new GameObject[0,0];
 	public PlayerData playerData;
 	public List<Item> items = new List<Item>();
+	public List<Ability> abilities = new List<Ability>();
 	
 	public enum gameState
 	{
@@ -84,13 +87,38 @@ public class AllData : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		createPermanentData ();
-
-		currentState = gameState.Turn_Based_Battle;
-
 		getComponents();
+		currentState = savedState ();
+		createPermanentData ();
 		createFolders();
 		loadData ();
+	}
+
+	public gameState savedState()
+	{
+		switch (readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Save Data/playerData.csv")[0,4])
+		{
+		case ("Battle"):
+		{
+			return gameState.Battle;
+			break;
+		}
+		case ("Overworld"):
+		{
+			return gameState.Overworld;
+			break;
+		}
+		case ("Turn_Based_Battle"):
+		{
+			return gameState.Turn_Based_Battle;
+			break;
+		}
+		default:
+		{
+			return gameState.Overworld;
+			break;
+		}
+		}
 	}
 
 	public void createPermanentData()
@@ -99,13 +127,18 @@ public class AllData : MonoBehaviour
 
 		if (tempPermanentData == null) 
 		{
-			GameObject newPermanentData = new GameObject();
+			GameObject newPermanentData = new GameObject ();
 			newPermanentData.name = "PermanentData";
-			PermanentData permanentDataScript = newPermanentData.AddComponent<PermanentData>();
+			PermanentData permanentDataScript = newPermanentData.AddComponent<PermanentData> ();
 			permanentDataScript.currentDoorNum = 0;
-			permanentDataScript.currentLevel = "Wood Floor Arena";
+			permanentDataScript.currentLevel = readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Save Data/playerData.csv") [0, 5];
 			permanentDataScript.playerCharacterID = 0;
 		}
+
+		permanentData = GameObject.Find ("PermanentData").GetComponent<PermanentData> ();
+		currentLevel = permanentData.currentLevel;
+		currentDoorNum = permanentData.currentDoorNum;
+		playerCharacterID = permanentData.playerCharacterID;
 	}
 
 	public void createFolders()
@@ -141,23 +174,20 @@ public class AllData : MonoBehaviour
 		itemFolder = new GameObject();
 		itemFolder.name = "Item Folder";
 		itemFolder.transform.parent = gameDataFolder.transform;
+
+		abilityFolder = new GameObject ();
+		abilityFolder.name = "Ability Folder";
+		abilityFolder.transform.parent = gameDataFolder.transform;
 	}
 
 	public void getComponents()
 	{
-		permanentData = GameObject.Find ("PermanentData").GetComponent<PermanentData> ();
-		currentLevel = permanentData.currentLevel;
-		currentDoorNum = permanentData.currentDoorNum;
-		playerCharacterID = permanentData.playerCharacterID;
-
 		gameDataFolder = GameObject.Find ("GameDataFolder");
 
 		convertData = gameObject.AddComponent<ConvertData>();
 		saveData = gameObject.AddComponent<SaveData>();
 
 		createTurnBasedBattle = gameObject.AddComponent<CreateTurnBasedBattle>();
-
-		runTurnBasedBattle = gameObject.AddComponent<RunTurnBasedBattle>();
 		
 		cal = GameObject.Find("GameData").GetComponent<Calendar>();
 		canvas = GameObject.Find ("Canvas");
@@ -191,6 +221,8 @@ public class AllData : MonoBehaviour
 
 		createItems = gameObject.AddComponent<CreateItems>();
 		createItems.GetComponent<CreateItems>().allData = this;
+
+		createAbility = gameObject.AddComponent<CreateAbility> ();
 	}
 
 	public void loadData()
@@ -220,6 +252,7 @@ public class AllData : MonoBehaviour
 		{
 			loadGameData();
 			loadCells(currentLevel);
+			loadPlayer();
 
 			runOverworld = gameObject.AddComponent<RunOverworld> ();
 			runOverworld.allData = this;
@@ -250,6 +283,8 @@ public class AllData : MonoBehaviour
 			runOverworld.InventoryCanvas.SetActive (false);
 			runOverworld.eventSystem = GameObject.Find ("EventSystem").GetComponent<EventSystem>();
 
+			GameObject.Find ("BattleCanvas").SetActive(false);
+
 			finishedLoading = true;
 			break;
 		}
@@ -259,7 +294,33 @@ public class AllData : MonoBehaviour
 
 			loadCells("Wood Floor Arena");
 			loadTurnBasedBattle();
-			GameObject.Find ("DialogueOptionPanel").SetActive (false);
+
+			runTurnBasedBattle = gameObject.AddComponent<RunTurnBasedBattle>();
+			runTurnBasedBattle.allData = this;
+			runTurnBasedBattle.battleCanvas = GameObject.Find ("BattleCanvas");
+			runTurnBasedBattle.battleOptionButtons.Add (GameObject.Find ("Attack"));
+			runTurnBasedBattle.battleOptionButtons.Add (GameObject.Find ("Item"));
+			runTurnBasedBattle.battleOptionButtons.Add (GameObject.Find ("Run"));
+			runTurnBasedBattle.actionLog = GameObject.Find ("ActionLog");
+			runTurnBasedBattle.characterNames.Add (GameObject.Find ("Character1Name"));
+			runTurnBasedBattle.characterNames.Add (GameObject.Find ("Character2Name"));
+			runTurnBasedBattle.characterNames.Add (GameObject.Find ("Character3Name"));
+			runTurnBasedBattle.characterNames.Add (GameObject.Find ("Character4Name"));
+			runTurnBasedBattle.characterHealths.Add (GameObject.Find ("Character1Health"));
+			runTurnBasedBattle.characterHealths.Add (GameObject.Find ("Character2Health"));
+			runTurnBasedBattle.characterHealths.Add (GameObject.Find ("Character3Health"));
+			runTurnBasedBattle.characterHealths.Add (GameObject.Find ("Character4Health"));
+			runTurnBasedBattle.abilityPanel = GameObject.Find ("AbilityPanel");
+			runTurnBasedBattle.abilityButtons.Add (GameObject.Find ("Ability1"));
+			runTurnBasedBattle.abilityButtons.Add (GameObject.Find ("Ability2"));
+			runTurnBasedBattle.abilityButtons.Add (GameObject.Find ("Ability3"));
+			runTurnBasedBattle.abilityButtons.Add (GameObject.Find ("Ability4"));
+			runTurnBasedBattle.abilityPanel.SetActive(false);
+			runTurnBasedBattle.eventSystem = GameObject.Find ("EventSystem").GetComponent<EventSystem>();
+
+			runTurnBasedBattle.setupCharacterNamesandHealths(this);
+
+			GameObject.Find ("DialogueCanvas").SetActive (false);
 			GameObject.Find("InventoryCanvas").SetActive (false);
 
 			loadCharacterGameObjectsForTurnBasedBattle();
@@ -286,15 +347,37 @@ public class AllData : MonoBehaviour
 	{
 //		if(!permanentData.alreadyLoadedData)
 //		{
-			loadPlayerData();
-			loadItems();
-			loadClasses();
-			loadDialogue();
-			loadQuests();
-			loadCharacters();
+		loadPlayerData();
+		loadItems();
+		loadClasses();
+		loadDialogue();
+		loadQuests();
+		loadCharacters();
+		loadAbilities ();
+
 
 //			permanentData.alreadyLoadedData = true;
 //		}
+	}
+
+	public void loadAbilities()
+	{
+		string[,] tempAbilities = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/GameData/abilities.csv");
+		
+		for(int row = 0; row < tempAbilities.GetLength (0); row ++)
+		{
+			createAbility.createAbility
+			(
+				this
+				,abilityFolder
+				,int.Parse (tempAbilities[row,0])
+				,tempAbilities[row,1]
+				,float.Parse(tempAbilities[row,2])
+				,float.Parse (tempAbilities[row,3])
+				,int.Parse (tempAbilities[row,4])
+				,convertData.convertStringtoListInt(tempAbilities[row,5])
+			);
+		}
 	}
 
 	public void loadItems()
@@ -395,6 +478,7 @@ public class AllData : MonoBehaviour
 				,int.Parse (tempCharacterClasses[row,4])
 				,int.Parse (tempCharacterClasses[row,5])
 				,int.Parse (tempCharacterClasses[row,6])
+				,convertData.convertStringtoListInt(tempCharacterClasses[row,7])
 			);
 		}
 	}
@@ -443,39 +527,33 @@ public class AllData : MonoBehaviour
 					,2
 					,2
 					,new List<string>()
+					,true
 				)
 			);
 		}
 		
-		createCharacterGameObject.createCharacterGameObject
+		runTurnBasedBattle.enemyParty.Add 
 		(
-			cal
-			,characterGameObjectFolder
-			,cells[1,9].transform.position
-			,characters[1]
-			,"NPC"
-			,"Enemy"
-			,"Friendly"
-			,false
-			,1
-			,9
-			,new List<string>()
+			createCharacterGameObject.createCharacterGameObject
+			(
+				cal
+				, characterGameObjectFolder
+				, cells [1, 9].transform.position
+				, characters [1]
+				, "NPC"
+				, "Enemy"
+				, "Friendly"
+				, false
+				, 1
+				, 9
+				, new List<string> ()
+				, true
+			)
 		);
-//		
-//		createCharacterGameObject.createCharacterGameObject
-//		(
-//			cal
-//			,characterGameObjectFolder
-//			,cells[3,3].transform.position
-//			,characters[2]
-//			,"NPC"
-//			,"Faction - Side 2"
-//			,"Faction - Side 1"
-//			,false
-//			,3
-//			,3
-//			,new List<string>()
-//		);
+
+		runTurnBasedBattle.allParties.AddRange (runTurnBasedBattle.playerParty);
+		runTurnBasedBattle.allParties.AddRange (runTurnBasedBattle.enemyParty);
+
 	}
 
 	public void loadCharacterGameObjects_Manual()
@@ -504,6 +582,7 @@ public class AllData : MonoBehaviour
 			,0
 			,0
 			,new List<string>()
+			,true
 		);
 
 		createCharacterGameObject.createCharacterGameObject
@@ -519,6 +598,7 @@ public class AllData : MonoBehaviour
 			,3
 			,6
 			,new List<string>()
+			,true
 		);
 
 		createCharacterGameObject.createCharacterGameObject
@@ -534,6 +614,7 @@ public class AllData : MonoBehaviour
 			,3
 			,3
 			,new List<string>()
+			,true
 		);
 	}
 
@@ -565,6 +646,34 @@ public class AllData : MonoBehaviour
 		);
 
 		createCells.addNeighborsToCells();
+	}
+
+	public void loadPlayer()
+	{
+		int row = int.Parse (readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Save Data/playerData.csv") [0, 1]);
+		int col = int.Parse (readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Save Data/playerData.csv") [0, 2]);
+
+
+
+		Vector3 pos = GameObject.Find ("Cell_" + row + "_" + col).transform.position;
+
+		player = createCharacterGameObject.createCharacterGameObject
+		(
+			cal
+			, characterGameObjectFolder
+			, pos
+			, characters [playerCharacterID]
+			, "Player"
+			, "Good"
+			, "Bad"
+			, true
+			, row
+			, col
+			,new List<string>()
+			,false
+		);
+
+		GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<SmoothCamera2D> ().target = player.transform;
 	}
 
 	public void loadBattle()

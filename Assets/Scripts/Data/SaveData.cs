@@ -26,4 +26,13 @@ public class SaveData : MonoBehaviour
 		File.WriteAllLines("./Assets/Resources/CSV/GameData/quests.csv",questData);
 	}
 
+	public void savePlayerData(PlayerData playerData, int savedX, int savedY, string savedArea, string gameState, string destination)
+	{
+		string[] playerDataString = new string[2];
+
+		playerDataString [0] = "gold,savedX,savedY,savedArea,gameState,destination";
+		playerDataString [1] = playerData.gold + "," + savedX.ToString () + "," + savedY.ToString () + "," + savedArea + "," + gameState + "," + destination;
+
+		File.WriteAllLines ("./Assets/Resources/CSV/Save Data/playerData.csv",playerDataString);
+	}
 }
