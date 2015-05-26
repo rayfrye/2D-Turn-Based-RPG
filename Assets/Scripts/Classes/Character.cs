@@ -17,6 +17,13 @@ public class Character : MonoBehaviour
 	public List<int> dialogueIDs = new List<int>();
 	public List<int> questIDPrereqs = new List<int>();
 
+	public Item equippedHead;
+	public Item equippedShirtID;
+	public Item equippedHandsID;
+	public Item equippedPantsID;
+	public Item equippedLegsID;
+	public Item equippedWeaponID;
+
 	public int currentDialogueIndex(List<Quest> quests)
 	{
 		int currentIndex = 0;

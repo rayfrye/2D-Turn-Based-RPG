@@ -156,8 +156,8 @@ public class RunOverworld : MonoBehaviour
 			}
 			case "o":
 			{
-				permanentData.currentLevel = "Wood Floor Test";
 				allData.saveData.savePlayerData(allData.playerData,playerCharacterGameObject.row,playerCharacterGameObject.col,permanentData.currentLevel,"Turn_Based_Battle","Wood Floor Arena");
+				permanentData.currentLevel = "Wood Floor Arena";
 				Application.LoadLevel("Battle");
 				break;
 			}
@@ -488,13 +488,13 @@ public class RunOverworld : MonoBehaviour
 	{
 		string keyPressed = Input.inputString;
 		Cell cell = dialogueTarget.GetComponent<Cell> ();
-		dialoguePanel.SetActive (false);
-		dialoguePanel.GetComponentInChildren<Text> ().text = cell.dialogue [currentDialogueIndex];
+		dialoguePanel.SetActive (true);
+		dialoguePanel.transform.FindChild ("DialogueText").GetComponent<Text> ().text = cell.dialogue [currentDialogueIndex];
 
 		if (keyPressed.Length == 0) 
 		{
 			return false;
-		} 
+		}
 		else 
 		{
 			if(currentDialogueIndex < cell.dialogue.Count()-1)
@@ -524,7 +524,7 @@ public class RunOverworld : MonoBehaviour
 			{
 				currentCharacterTransform.position = Vector3.MoveTowards (currentCharacterTransform.position, currentCharacter.path [0].transform.position, maxDistanceDelta);
 				return false;
-			} 
+			}
 			else 
 			{
 				currentCharacterTransform.position = currentCharacter.path [0].transform.position;
@@ -539,7 +539,7 @@ public class RunOverworld : MonoBehaviour
 				currentCharacter.path.Clear ();
 				return true;
 			}
-		} 
+		}
 		else 
 		{
 			if ((currentCharacterTransform.position - currentCharacter.path [0].transform.position).sqrMagnitude > .05f)
@@ -561,6 +561,7 @@ public class RunOverworld : MonoBehaviour
 				permanentData.currentDoorNum = destCell.doorNum;
 
 				allData.saveData.saveData(allData.quests);
+				allData.saveData.savePlayerData(allData.playerData,destCell.destx,destCell.desty,permanentData.currentLevel,"Overworld",permanentData.currentLevel);
 
 				currentState = OverworldState.GoingThroughDoor;
 

@@ -6,3 +6,8 @@ id,text,hasActions,hasOptions,optionText,optionDestID,actionText
 4,Hello I need someone to go north to deliver a message to Pacuat.,FALSE,TRUE,I'll Do it|No Thanks|,5|6|,
 5,Great come back and see me once you've done it.,TRUE,FALSE,,,questCompleted:2|
 6,That's a shame. ,FALSE,FALSE,,,
+7,Who are you?,FALSE,FALSE,,,
+8,I'm Pacuat. Do you have a message for me?,FALSE,TRUE,Yes|No|,9|10|,
+9,Great. Thanks for delivering this. Please return to Aarland,TRUE,FALSE,,,questCompleted:3|
+10,Oh. Alright.,FALSE,FALSE,,,
+11,Great thanks for talking to Pacuat.,TRUE,FALSE,,,questCompleted:4|

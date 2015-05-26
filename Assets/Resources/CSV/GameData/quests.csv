@@ -1,5 +1,6 @@
 id,name,desc,iscompleted
 0,Starting Out,Default Starting Quest,TRUE
 1,Testing First Quest,Testing,TRUE
-2,Speak to Aarland in Gwain,Speak to Aarlan in Gwain,FALSE
+2,Speak to Aarland in Gwain,Speak to Aarland in Gwain,TRUE
 3,Speak to Pacuat,Speak to Pacuat,FALSE
+4,Return to Aarland,Return to Aarland,FALSE

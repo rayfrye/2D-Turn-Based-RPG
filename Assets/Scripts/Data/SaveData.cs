@@ -23,7 +23,7 @@ public class SaveData : MonoBehaviour
 			questData[quest.id+1] = quest.id.ToString() + "," + quest.name + "," + quest.description + "," + quest.isComplete.ToString ().ToUpper();
 		}
 
-		File.WriteAllLines("./Assets/Resources/CSV/GameData/quests.csv",questData);
+		File.WriteAllLines("./Assets/Resources/CSV/Save Data/quests.csv",questData);
 	}
 
 	public void savePlayerData(PlayerData playerData, int savedX, int savedY, string savedArea, string gameState, string destination)

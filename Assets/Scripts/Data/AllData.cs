@@ -360,6 +360,11 @@ public class AllData : MonoBehaviour
 //		}
 	}
 
+	public void loadRegionScript()
+	{
+		gameObject.AddComponent (permanentData.currentLevel.Replace (" ", ""));
+	}
+
 	public void loadAbilities()
 	{
 		string[,] tempAbilities = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/GameData/abilities.csv");
@@ -416,7 +421,7 @@ public class AllData : MonoBehaviour
 
 	public void loadQuests()
 	{
-		string[,] tempQuests = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/GameData/quests.csv");
+		string[,] tempQuests = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/Save Data/quests.csv");
 		
 		for(int row = 0; row < tempQuests.GetLength (0); row ++)
 		{
@@ -652,9 +657,7 @@ public class AllData : MonoBehaviour
 	{
 		int row = int.Parse (readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Save Data/playerData.csv") [0, 1]);
 		int col = int.Parse (readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Save Data/playerData.csv") [0, 2]);
-
-
-
+		
 		Vector3 pos = GameObject.Find ("Cell_" + row + "_" + col).transform.position;
 
 		player = createCharacterGameObject.createCharacterGameObject
