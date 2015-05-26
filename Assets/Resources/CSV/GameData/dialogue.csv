@@ -1,13 +1,15 @@
 id,text,hasActions,hasOptions,optionText,optionDestID,actionText
-0,I'm an NPC.,FALSE,TRUE,I'm Not|Me Too|,1|2|,
-1,Weird,FALSE,FALSE,,,
-2,Cool,TRUE,FALSE,,,questCompleted:1|
-3,Good job doing that thing,FALSE,FALSE,,,
-4,Hello I need someone to go north to deliver a message to Pacuat.,FALSE,TRUE,I'll Do it|No Thanks|,5|6|,
-5,Great come back and see me once you've done it.,TRUE,FALSE,,,questCompleted:2|
-6,That's a shame. ,FALSE,FALSE,,,
-7,Who are you?,FALSE,FALSE,,,
-8,I'm Pacuat. Do you have a message for me?,FALSE,TRUE,Yes|No|,9|10|,
-9,Great. Thanks for delivering this. Please return to Aarland,TRUE,FALSE,,,questCompleted:3|
-10,Oh. Alright.,FALSE,FALSE,,,
-11,Great thanks for talking to Pacuat.,TRUE,FALSE,,,questCompleted:4|
+0,I'm an NPC.,TRUE,TRUE,I'm Not|Me Too|,1|2|,endDialogue:0|
+1,Weird,TRUE,FALSE,,,endDialogue:0|
+2,Cool,TRUE,FALSE,,,endDialogue:0| questCompleted:1|
+3,Good job doing that thing,TRUE,FALSE,,,endDialogue:0|
+4,Hello I need someone to go north to deliver a message to Pacuat.,TRUE,TRUE,I'll Do it|No Thanks|,5|6|,endDialogue:0|
+5,Great come back and see me once you've done it.,TRUE,FALSE,,,questCompleted:2|endDialogue:0|
+6,That's a shame. ,TRUE,FALSE,,,endDialogue:0|
+7,Who are you?,TRUE,FALSE,,,endDialogue:0|
+8,I'm Pacuat. Do you have a message for me?,TRUE,TRUE,Yes|No|,9|10|,endDialogue:0|
+9,Great. Thanks for delivering this. Please return to Aarland,TRUE,FALSE,,,questCompleted:3|endDialogue:0|
+10,Oh. Alright.,TRUE,FALSE,,,endDialogue:0|
+11,Great thanks for talking to Pacuat.,TRUE,FALSE,,,questCompleted:4|endDialogue:0|
+12,My wagon broke down here! I can't get through!,TRUE,FALSE,,,goToDialogueID:13|
+13,I'm trying to get it moved. Come back later.,TRUE,FALSE,,,endDialogue:0|

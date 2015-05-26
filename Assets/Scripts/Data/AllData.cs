@@ -253,6 +253,7 @@ public class AllData : MonoBehaviour
 			loadGameData();
 			loadCells(currentLevel);
 			loadPlayer();
+			loadRegionScript();
 
 			runOverworld = gameObject.AddComponent<RunOverworld> ();
 			runOverworld.allData = this;
@@ -362,7 +363,8 @@ public class AllData : MonoBehaviour
 
 	public void loadRegionScript()
 	{
-		gameObject.AddComponent (permanentData.currentLevel.Replace (" ", ""));
+		//Type type = Type.GetType (permanentData.currentLevel.Replace (" ", ""));
+		gameObject.AddComponent(Type.GetType (permanentData.currentLevel.Replace (" ", "")));
 	}
 
 	public void loadAbilities()

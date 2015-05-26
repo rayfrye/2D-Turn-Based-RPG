@@ -395,23 +395,35 @@ public class RunOverworld : MonoBehaviour
 			}
 			else
 			{
+				bool endDialogue = false;
+
 				if(allData.dialogues[currentDialogueIndex].hasActions)
 				{
-					doDialogueAction(allData.dialogues[currentDialogueIndex].actions);
+					endDialogue = doDialogueAction(allData.dialogues[currentDialogueIndex].actions);
 				}
 				
 				dialoguePanel.SetActive (false);
 				dialogueOptionButtons[0].SetActive (false);
 				dialogueOptionButtons[1].SetActive (false);
 				dialogueOptionButtons[2].SetActive (false);
-				
-				return true;
+
+				if(endDialogue)
+				{
+					return true;
+				}
+				else
+				{
+					currentState = OverworldState.SetupDialogueWithNPC;
+					return false;
+				}
 			}
 		}
 	}
 
-	void doDialogueAction(List<string> actions)
+	bool doDialogueAction(List<string> actions)
 	{
+		bool closeDialogue = false;
+
 		foreach(string action in actions)
 		{
 			switch(getActionType(action))
@@ -422,12 +434,24 @@ public class RunOverworld : MonoBehaviour
 				allData.quests[questID].isComplete = true;
 				break;
 			}
+			case "goToDialogueID":
+			{
+				currentDialogueIndex = int.Parse (getActionValue (action,0));
+				break;
+			}
+			case "endDialogue":
+			{
+				closeDialogue = true;
+				break;
+			}
 			default:
 			{
 				break;
 			}
 			}
 		}
+
+		return closeDialogue;
 	}
 
 	string getActionType(string action)
