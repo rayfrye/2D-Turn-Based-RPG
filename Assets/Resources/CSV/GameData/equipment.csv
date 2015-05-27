@@ -1,0 +1,5 @@
+id,name,desc,typeid,addMoveSpeed,addAttack,addDefense,addAttackRange
+0,Helmet,A normal helmet.,0,0,1,1,1
+1,Shirt,A normal shirt. Comfortable.,1,0,1,1,1
+2,Pants,Some pants.,2,0,1,1,1
+3,Shoes,Some shoes.,3,0,1,1,1

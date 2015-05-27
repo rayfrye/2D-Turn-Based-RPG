@@ -8,38 +8,49 @@ using System.Linq;
 
 public class AllData : MonoBehaviour 
 {
-	Calendar cal;
-
-	public string currentLevel;
-	public int currentDoorNum ;
-	
-	public int playerCharacterID;
-
+	#region creation
 	public CreateCharacterClass createCharacterClass;
 	public CreateCharacter createCharacter;
 	public CreateCharacterGameObject createCharacterGameObject;
-	public CreateCells createCells;
-	public Pathfinder pathfinder;
-	public CreateBattle createBattle;
-	public RunBattle runBattle;
-	public RunOverworld runOverworld;
-	public ReadCSV readCSV;
-	public ReadCellData readCellData;
-	public bool finishedLoading = false;
-	public GameObject player;
-	public PermanentData permanentData;
 	public CreateDialogue createDialogue;
 	public CreateQuest createQuest;
 	public CreatePlayerData createPlayerData;
 	public CreateItems createItems;
-	public ConvertData convertData;
-	public CreateAbility createAbility;
-	public SaveData saveData;
+	public CreateCells createCells;
 	public CreateTurnBasedBattle createTurnBasedBattle;
+	public CreateBattle createBattle;
+	public CreateAbility createAbility;
+
+	#endregion creation
+
+	#region gameplay
+	public RunBattle runBattle;
+	public RunOverworld runOverworld;
 	public RunTurnBasedBattle runTurnBasedBattle;
 
+	public bool finishedLoading = false;
+	public GameObject player;
 
-	public Font arial;
+	#endregion gameplay
+
+	#region data
+	public PermanentData permanentData;
+	public Calendar cal;
+	public SaveData saveData;
+	public string currentLevel;
+	public int currentDoorNum ;
+	
+	public int playerCharacterID;
+	#endregion data
+
+	#region functions
+	public ReadCSV readCSV;
+	public ReadCellData readCellData;
+	public Pathfinder pathfinder;
+	public ConvertData convertData;
+
+	#endregion functions
+
 
 	#region DataFolders
 	public GameObject gameDataFolder;
@@ -64,7 +75,11 @@ public class AllData : MonoBehaviour
 	public Color32 c_Gray;
 	public Color32 c_Gray_50pct;
 	#endregion colors
-	
+
+	#region UI
+	public Font arial;
+	#endregion UI
+
 	public List<CharacterClass> characterClasses = new List<CharacterClass>();
 	public List<Character> characters = new List<Character>();
 	public List<GameObject> characterGameObjects = new List<GameObject>();
@@ -346,8 +361,6 @@ public class AllData : MonoBehaviour
 
 	public void loadGameData()
 	{
-//		if(!permanentData.alreadyLoadedData)
-//		{
 		loadPlayerData();
 		loadItems();
 		loadClasses();
@@ -355,15 +368,10 @@ public class AllData : MonoBehaviour
 		loadQuests();
 		loadCharacters();
 		loadAbilities ();
-
-
-//			permanentData.alreadyLoadedData = true;
-//		}
 	}
 
 	public void loadRegionScript()
 	{
-		//Type type = Type.GetType (permanentData.currentLevel.Replace (" ", ""));
 		gameObject.AddComponent(Type.GetType (permanentData.currentLevel.Replace (" ", "")));
 	}
 
