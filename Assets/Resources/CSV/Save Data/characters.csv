@@ -8,5 +8,5 @@ id,name,characterClassID,dialogueIDs,dialogueQuestIDPrereqs,level,addMoveSpeed,a
 6,Pacuat,0,7|8|3|,0|2|3|,1,0,0,0,0,0,0,0,0,0,0
 7,Traveling Merchant,0,12|3|,0|4|,1,0,0,0,0,0,0,0,0,0,0
 8,Gwain Barkeeper,0,14|3|,0|5|,1,0,0,0,0,0,0,0,0,0,0
-9,Pacuat Rebel,0,19|16|18|,0|5|7|,1,0,0,0,0,0,0,0,0,0,0
-10,Pacuat King's Guard,0,19|15|17|,0|5|6|,1,0,0,0,0,0,0,0,0,0,0
+9,Pacuat Rebel,0,19|16|3|18|,0|5|7|6|,1,0,0,0,0,0,0,0,0,0,0
+10,Pacuat King's Guard,0,19|15|3|17|,0|5|6|7|,1,0,0,0,0,0,0,0,0,0,0

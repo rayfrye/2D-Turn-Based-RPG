@@ -14,6 +14,17 @@ public class CreateCharacter : MonoBehaviour
 		,CharacterClass characterClass
 		,List<int> dialogueIDs
 		,List<int> questIDPrereqs
+		,int level
+		,int addMoveSpeed
+		,int addAttack
+		,int addDefense
+		,int addAttackRange
+		,Item equippedHead
+		,Item equippedShirt
+		,Item equippedHands
+		,Item equippedLegs
+		,Item equippedFeet
+		,Item equippedWeapon
 	)
 	{
 		Character newCharacter = folder.AddComponent<Character>();
@@ -24,6 +35,18 @@ public class CreateCharacter : MonoBehaviour
 
 		newCharacter.dialogueIDs = dialogueIDs;
 		newCharacter.questIDPrereqs = questIDPrereqs;
+
+		newCharacter.characterLevel = level;
+		newCharacter.addMoveSpeed = addMoveSpeed;
+		newCharacter.addAttack = addAttack;
+		newCharacter.addDefense = addDefense;
+		newCharacter.addAttackRange = addAttackRange;
+		newCharacter.equippedHead = equippedHead;
+		newCharacter.equippedShirt = equippedShirt;
+		newCharacter.equippedHands = equippedHands;
+		newCharacter.equippedLegs = equippedLegs;
+		newCharacter.equippedFeet = equippedFeet;
+		newCharacter.equippedWeapon = equippedWeapon;
 
 		allData.characters.Add (newCharacter);
 	}

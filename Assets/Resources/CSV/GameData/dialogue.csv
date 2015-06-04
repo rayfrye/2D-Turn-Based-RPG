@@ -13,3 +13,9 @@ id,text,hasActions,hasOptions,optionText,optionDestID,actionText
 11,Great thanks for talking to Pacuat.,TRUE,FALSE,,,questCompleted:4|endDialogue:0|
 12,My wagon broke down here! I can't get through!,TRUE,FALSE,,,goToDialogueID:13|
 13,I'm trying to get it moved. Come back later.,TRUE,FALSE,,,endDialogue:0|
+14,Hey – deliver this stuff to the King's Guard in Pell,TRUE,FALSE,,,questCompleted:5|endDialogue:0|
+15,Thanks! We've been waiting for this stuff,TRUE,FALSE,,,questCompleted:6|endDialogue:0|
+16,Oh man! This is just what we needed. Now we can take the bridge!,TRUE,FALSE,,,questCompleted:7|endDialogue:0|
+17,Rebel filth...,TRUE,FALSE,,,endDialogue:0|
+18,Get out of here.,TRUE,FALSE,,,endDialogue:0|
+19,Hello.,TRUE,FALSE,,,endDialogue:0|

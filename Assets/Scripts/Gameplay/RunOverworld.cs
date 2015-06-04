@@ -156,7 +156,7 @@ public class RunOverworld : MonoBehaviour
 			}
 			case "o":
 			{
-				allData.saveData.savePlayerData(allData.playerData,playerCharacterGameObject.row,playerCharacterGameObject.col,permanentData.currentLevel,"Turn_Based_Battle","Wood Floor Arena");
+				allData.saveData.savePlayerData(allData.playerData,playerCharacterGameObject.row,playerCharacterGameObject.col,permanentData.currentLevel,"Turn_Based_Battle","Wood Floor Arena",allData);
 				permanentData.currentLevel = "Wood Floor Arena";
 				Application.LoadLevel("Battle");
 				break;
@@ -585,7 +585,7 @@ public class RunOverworld : MonoBehaviour
 				permanentData.currentDoorNum = destCell.doorNum;
 
 				allData.saveData.saveData(allData.quests);
-				allData.saveData.savePlayerData(allData.playerData,destCell.destx,destCell.desty,permanentData.currentLevel,"Overworld",permanentData.currentLevel);
+				allData.saveData.savePlayerData(allData.playerData,destCell.destx,destCell.desty,permanentData.currentLevel,"Overworld",permanentData.currentLevel,allData);
 
 				currentState = OverworldState.GoingThroughDoor;
 

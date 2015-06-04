@@ -13,16 +13,20 @@ public class Character : MonoBehaviour
 	public int defenseModifier;
 	public int totalHealthModifier;
 	public int attackRangeModifier;
+	public int addMoveSpeed;
+	public int addAttack;
+	public int addDefense;
+	public int addAttackRange;
 
 	public List<int> dialogueIDs = new List<int>();
 	public List<int> questIDPrereqs = new List<int>();
 
 	public Item equippedHead;
-	public Item equippedShirtID;
-	public Item equippedHandsID;
-	public Item equippedPantsID;
-	public Item equippedLegsID;
-	public Item equippedWeaponID;
+	public Item equippedShirt;
+	public Item equippedHands;
+	public Item equippedLegs;
+	public Item equippedFeet;
+	public Item equippedWeapon;
 
 	public int currentDialogueIndex(List<Quest> quests)
 	{
@@ -36,9 +40,11 @@ public class Character : MonoBehaviour
 			}
 			else
 			{
-				i = questIDPrereqs.Count;
+				//i = questIDPrereqs.Count;
 			}
 		}
+
+		print (currentIndex);
 		
 		return currentIndex;
 	}

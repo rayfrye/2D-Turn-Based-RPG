@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 using System.Collections;
@@ -20,6 +21,7 @@ public class AllData : MonoBehaviour
 	public CreateTurnBasedBattle createTurnBasedBattle;
 	public CreateBattle createBattle;
 	public CreateAbility createAbility;
+	public MainMenu mainMenu;
 
 	#endregion creation
 
@@ -95,6 +97,7 @@ public class AllData : MonoBehaviour
 		Battle
 		,Overworld
 		,Turn_Based_Battle
+		,MainMenu
 	}
 
 	public gameState currentState;
@@ -103,7 +106,6 @@ public class AllData : MonoBehaviour
 	void Start ()
 	{
 		getComponents();
-		currentState = savedState ();
 		createPermanentData ();
 		createFolders();
 		loadData ();
@@ -142,12 +144,17 @@ public class AllData : MonoBehaviour
 
 		if (tempPermanentData == null) 
 		{
+			currentState = gameState.MainMenu;//savedState ();
 			GameObject newPermanentData = new GameObject ();
 			newPermanentData.name = "PermanentData";
 			PermanentData permanentDataScript = newPermanentData.AddComponent<PermanentData> ();
 			permanentDataScript.currentDoorNum = 0;
 			permanentDataScript.currentLevel = readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Save Data/playerData.csv") [0, 5];
 			permanentDataScript.playerCharacterID = 0;
+		} 
+		else 
+		{
+			currentState = savedState ();
 		}
 
 		permanentData = GameObject.Find ("PermanentData").GetComponent<PermanentData> ();
@@ -198,7 +205,7 @@ public class AllData : MonoBehaviour
 	public void getComponents()
 	{
 		gameDataFolder = GameObject.Find ("GameDataFolder");
-
+	
 		convertData = gameObject.AddComponent<ConvertData>();
 		saveData = gameObject.AddComponent<SaveData>();
 
@@ -300,6 +307,7 @@ public class AllData : MonoBehaviour
 			runOverworld.eventSystem = GameObject.Find ("EventSystem").GetComponent<EventSystem>();
 
 			GameObject.Find ("BattleCanvas").SetActive(false);
+			GameObject.Find ("MainMenuCanvas").SetActive(false);
 
 			finishedLoading = true;
 			break;
@@ -341,6 +349,56 @@ public class AllData : MonoBehaviour
 
 			loadCharacterGameObjectsForTurnBasedBattle();
 
+			break;
+		}
+		case gameState.MainMenu:
+		{
+			loadGameData();
+			mainMenu = gameObject.AddComponent<MainMenu> ();
+
+			mainMenu.allData = this;
+			mainMenu.mainMenuCanvas = GameObject.Find ("MainMenuCanvas");
+			mainMenu.mainMenuButtons.Add(GameObject.Find ("StartGame"));
+			mainMenu.mainMenuButtons.Add(GameObject.Find ("LoadGame"));
+			mainMenu.mainMenuButtons.Add(GameObject.Find ("Options"));
+			mainMenu.mainMenuButtons.Add(GameObject.Find ("QuitGame"));
+			mainMenu.mainMenuButtonPanel = GameObject.Find ("MenuButtons");
+			mainMenu.mainMenuClassPanel = GameObject.Find ("ClassButtons");
+
+			mainMenu.characterButtonPanel = GameObject.Find("CharacterButtons");
+			mainMenu.characterButtons.Add (GameObject.Find ("Character1"));
+			mainMenu.characterButtons.Add (GameObject.Find ("Character2"));
+			mainMenu.characterButtons.Add (GameObject.Find ("Character3"));
+			mainMenu.characterButtons.Add (GameObject.Find ("Character4"));
+
+			mainMenu.characterNameInput = GameObject.Find ("CharacterNameInput");
+
+			mainMenu.mainMenuClassButtons.Add (GameObject.Find ("Class1"));
+			mainMenu.mainMenuClassButtons[0].transform.FindChild("Text").GetComponent<Text>().text = characterClasses[0].charClassName;
+
+			for(int i = 1; i < characterClasses.Count; i++)
+			{
+				GameObject newButton = (GameObject) Instantiate(GameObject.Find ("Class1"));
+				newButton.name = "Class"+i;
+				mainMenu.mainMenuClassButtons.Add (newButton);
+				mainMenu.mainMenuClassButtons[i].transform.FindChild("Text").GetComponent<Text>().text = characterClasses[i].charClassName;
+				newButton.transform.parent = mainMenu.mainMenuClassPanel.transform;
+				mainMenu.mainMenuClassButtons.Add (newButton);
+			}
+
+			mainMenu.characterNameInput.SetActive (false);
+			mainMenu.characterButtonPanel.SetActive (false);
+			mainMenu.mainMenuClassPanel.SetActive(false);
+
+			mainMenu.eventSystem = GameObject.Find ("EventSystem").GetComponent<EventSystem>();
+			GameObject.Find ("BattleCanvas").SetActive (false);
+			GameObject.Find ("DialogueCanvas").SetActive (false);
+			GameObject.Find ("InventoryCanvas").SetActive (false);
+
+			mainMenu.currentButton = 0;
+			mainMenu.currentState = MainMenu.mainMenuState.MainMenu;
+
+			finishedLoading = true;
 			break;
 		}
 		default:
@@ -413,17 +471,28 @@ public class AllData : MonoBehaviour
 
 	public void loadPlayerData()
 	{
-		List<int> partyCharacterIDs = new List<int>();
-		partyCharacterIDs.Add(0);
+		string[,] tempPlayerData = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/Save Data/playerData.csv");
+		string[] tempPlayerPartyIDs = readCSV.getSingleDimCSVData("./Assets/Resources/CSV/Save Data/playerParty.csv");
+		string[,] tempPlayerInv = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/Save Data/playerItems.csv");
 
 		Dictionary<int,int> inventoryItemIDs = new Dictionary<int,int>();
-		inventoryItemIDs.Add (0,1);
-		inventoryItemIDs.Add (1,1);
+
+		for (int row = 0; row < tempPlayerInv.GetLength (0); row++) 
+		{
+			inventoryItemIDs.Add (int.Parse (tempPlayerInv[row,0]),int.Parse (tempPlayerInv[row,1]));
+		}
+		
+		List<int> partyCharacterIDs = new List<int> ();
+		
+		for (int row = 0; row < tempPlayerPartyIDs.Length; row++) 
+		{
+			partyCharacterIDs.Add (int.Parse (tempPlayerPartyIDs[row]));
+		}
 
 		createPlayerData.createPlayerData
 		(
 			playerDataFolder
-			,100
+			,int.Parse (tempPlayerData[0,0])
 			,partyCharacterIDs
 			,inventoryItemIDs
 		);
@@ -501,13 +570,25 @@ public class AllData : MonoBehaviour
 	public void loadCharacters()
 	{
 		/*
-		 * GameObject folder
-		 * string characterName
-		 * int characterID
-		 * CharacterClass characterClass
+		GameObject folder
+		,string characterName
+		,int characterID
+		,CharacterClass characterClass
+		,List<int> dialogueIDs
+		,List<int> questIDPrereqs
+		,int level
+		,int addMoveSpeed
+		,int addAttack
+		,int addDefense
+		,Item equippedHead
+		,Item equippedShirt
+		,Item equippedHands
+		,Item equippedLegs
+		,Item equippedFeet
+		,Item equippedWeapon
 		 */
 
-		string[,] tempCharacters = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/GameData/characters.csv");
+		string[,] tempCharacters = readCSV.getMultiDimCSVData("./Assets/Resources/CSV/Save Data/characters.csv");
 		
 		for(int row = 0; row < tempCharacters.GetLength (0); row ++)
 		{
@@ -519,6 +600,17 @@ public class AllData : MonoBehaviour
 				,characterClasses[int.Parse (tempCharacters[row,2])]
 				,convertData.convertStringtoListInt(tempCharacters[row,3])
 				,convertData.convertStringtoListInt(tempCharacters[row,4])
+				,int.Parse (tempCharacters[row,5])
+				,int.Parse (tempCharacters[row,6])
+				,int.Parse (tempCharacters[row,7])
+				,int.Parse (tempCharacters[row,8])
+				,int.Parse (tempCharacters[row,9])
+				,items[int.Parse (tempCharacters[row,10])]
+				,items[int.Parse (tempCharacters[row,11])]
+				,items[int.Parse (tempCharacters[row,12])]
+				,items[int.Parse (tempCharacters[row,13])]
+				,items[int.Parse (tempCharacters[row,14])]
+				,items[int.Parse (tempCharacters[row,15])]
 			);
 		}
 	}

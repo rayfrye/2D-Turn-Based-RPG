@@ -102,7 +102,7 @@ public class RunTurnBasedBattle : MonoBehaviour
 
 			allData.permanentData.currentLevel = allData.readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Save Data/playerData.csv") [0, 3];
 
-			allData.saveData.savePlayerData(allData.playerData,row,col,"Wood Floor Arena","Overworld",allData.permanentData.currentLevel);
+			allData.saveData.savePlayerData(allData.playerData,row,col,"Wood Floor Arena","Overworld",allData.permanentData.currentLevel,allData);
 
 			Application.LoadLevel("Battle");
 			break;
@@ -114,7 +114,7 @@ public class RunTurnBasedBattle : MonoBehaviour
 			
 			allData.permanentData.currentLevel = allData.readCSV.getMultiDimCSVData ("./Assets/Resources/CSV/Save Data/playerData.csv") [0, 3];
 			
-			allData.saveData.savePlayerData(allData.playerData,row,col,"Wood Floor Arena","Overworld",allData.permanentData.currentLevel);
+			allData.saveData.savePlayerData(allData.playerData,row,col,"Wood Floor Arena","Overworld",allData.permanentData.currentLevel,allData);
 			
 			Application.LoadLevel("Battle");
 			break;

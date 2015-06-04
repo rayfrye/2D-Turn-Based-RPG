@@ -1,6 +1,9 @@
 id,name,desc,iscompleted
 0,Starting Out,Default Starting Quest,TRUE
-1,Testing First Quest,Testing,TRUE
-2,Speak to Aarland in Gwain,Speak to Aarland in Gwain,TRUE
+1,Testing First Quest,Testing,FALSE
+2,Speak to Aarland in Gwain,Speak to Aarland in Gwain,FALSE
 3,Speak to Pacuat,Speak to Pacuat,FALSE
 4,Return to Aarland,Return to Aarland,FALSE
+5,Speak to Barkeeper in Gwain,Speak to Barkeeper in Gwain,FALSE
+6,Deliver goods to King's Guard in Pell,Deliver goods to King's Guard in Pell,FALSE
+7,Deliver goods to Rebels in Pell,Deliver goods to Rebels in Pell,FALSE
