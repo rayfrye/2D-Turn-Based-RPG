@@ -78,7 +78,6 @@ public class MainMenu : MonoBehaviour
 		}
 		case mainMenuState.StartGame:
 		{
-
 			allData.saveData.savePlayerData(allData.playerData,22,22,"Gwain","Overworld","Gwain",allData);
 			Application.LoadLevel("Battle");
 			break;

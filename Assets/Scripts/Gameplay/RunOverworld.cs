@@ -370,7 +370,10 @@ public class RunOverworld : MonoBehaviour
 	{
 		string keyPressed = Input.inputString;
 		eventSystem.SetSelectedGameObject(dialogueOptionButtons[currentButton]);
-		handleInput(allData.dialogues[currentDialogueIndex].options.Count - 1);
+		if(allData.dialogues[currentDialogueIndex].hasOptions)
+		{
+			handleInput(allData.dialogues[currentDialogueIndex].options.Count - 1);
+		}
 		CharacterGameObject npc = dialogueTarget.GetComponent<CharacterGameObject> ();
 
 		if (keyPressed != "e") 

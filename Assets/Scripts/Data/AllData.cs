@@ -346,6 +346,7 @@ public class AllData : MonoBehaviour
 
 			GameObject.Find ("DialogueCanvas").SetActive (false);
 			GameObject.Find("InventoryCanvas").SetActive (false);
+			GameObject.Find("MainMenuCanvas").SetActive (false);
 
 			loadCharacterGameObjectsForTurnBasedBattle();
 
@@ -617,6 +618,8 @@ public class AllData : MonoBehaviour
 
 	public void loadCharacterGameObjectsForTurnBasedBattle()
 	{
+		int i = 0;
+
 		foreach(int playerCharacterID in playerData.partyCharacterIDs)
 		{
 			runTurnBasedBattle.playerParty.Add 
@@ -625,7 +628,7 @@ public class AllData : MonoBehaviour
 				(
 					cal
 					,characterGameObjectFolder
-					,cells[1,2].transform.position
+					,cells[(1 + i),2].transform.position
 					,characters[playerCharacterID]
 					,"NPC"
 					,"Friendly"
@@ -637,6 +640,8 @@ public class AllData : MonoBehaviour
 					,true
 				)
 			);
+
+			i+=2;
 		}
 		
 		runTurnBasedBattle.enemyParty.Add 

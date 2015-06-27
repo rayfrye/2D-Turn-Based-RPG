@@ -1,6 +1,6 @@
 id,name,characterClassID,dialogueIDs,dialogueQuestIDPrereqs,level,addMoveSpeed,addAttack,addDefense,addAttackRange,equippedHead,equippedShirt,equippedHands,equippedLegs,equippedFeet,equippedWeapon
-0,John,0,,,1,0,0,0,0,0,0,0,0,0,0
-1,Brett,1,,,1,0,0,0,0,0,0,0,0,0,0
+0,John,1,,,1,0,0,0,0,0,0,0,0,0,0
+1,Brett,0,,,1,0,0,0,0,0,0,0,0,0,0
 2,Tim,1,,,1,0,0,0,0,0,0,0,0,0,0
 3,Jermaine,0,,,1,0,0,0,0,0,0,0,0,0,0
 4,George,0,0|3|,0|1|,1,0,0,0,0,0,0,0,0,0,0
